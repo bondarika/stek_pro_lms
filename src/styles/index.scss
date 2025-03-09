@@ -1,0 +1,23 @@
+﻿:root {
+  font-family: system-ui, Coolvetica, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@function rem($pixels) {
+  @return calc($pixels / 10) + rem;
+}
+
+html {
+  --refRes: 1920;
+  font-size: calc(100vw / var(--refRes) * 10);
+
+  @media (max-width: 530px) {
+    --refRes: 390;
+  }
+}
