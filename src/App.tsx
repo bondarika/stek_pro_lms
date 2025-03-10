@@ -1,7 +1,11 @@
-import "./styles/index.scss";
+import Button from "./components/Button/Button";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Button>войти</Button>
+    </>
+  );
 }
 
 export default App;

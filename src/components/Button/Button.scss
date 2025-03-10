@@ -1,0 +1,24 @@
+﻿@import "@/App.scss";
+
+button {
+  font-family: "Coolvetica";
+  border: none;
+  border-radius: 12px;
+  background-color: #d95781;
+  color: #fffbff;
+  font-size: rem(20);
+  width: rem(476);
+  height: rem(52);
+  cursor: pointer;
+  &:disabled {
+    background-color: #e89bb4;
+    color: rgba(255, 251, 255, 0.7);
+    pointer-events: none;
+  }
+  &:hover {
+    background-color: #d23768;
+  }
+    &:active {
+    background-color: #b72a56;
+  }
+}
