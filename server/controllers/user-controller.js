@@ -2,25 +2,37 @@
 const codeService = require('../service/code-service');
 
 class UserController {
-
-  async check(req, res) {
+  async check(req, res, next) {
     try {
       const { code } = req.body;
       const result = await codeService.checkCode(code);
       return res.json(result);
     } catch (e) {
-      console.log(e);
+      next(e);
     }
   }
 
-  async registration(req, res) {
+  async registration(req, res, next) {
     try {
       const { email, password, codeId } = req.body;
       const userData = await userService.registration(email, password, codeId);
-      res.cookie('refreshToken', userData.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true});
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true
+      });
       return res.json(userData);
     } catch (e) {
-      console.log(e);
+      next(e);
+    }
+  }
+
+    async activate(req, res, next) {
+    try {
+      const activationLink = req.params.link;
+      await userService.activate(activationLink);
+      return res.redirect(process.env.CLIENT_URL);
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -30,11 +42,6 @@ class UserController {
   // }
 
   // async logout(req, res, next) {
-  //   try {
-  //   } catch (e) {}
-  // }
-
-  // async activate(req, res, next) {
   //   try {
   //   } catch (e) {}
   // }

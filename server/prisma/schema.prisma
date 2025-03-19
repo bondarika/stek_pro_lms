@@ -19,7 +19,7 @@ model User {
   password       String
   codeId         Int
   isActivated    Boolean     @default(false)
-  activationLink String?
+  activationLink String?     @unique
   codes          UserCodes[]
   token          Token?
 }
