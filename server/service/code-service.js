@@ -6,8 +6,8 @@ class CodeService {
       const existingCode = await prisma.code.findUnique({ where: { code } });
       return existingCode ? existingCode : null;
     } catch (e) {
-      console.error(`Error checking code ${code}: ${e}`);
-      throw new Error(`Error while checking code ${code} in the database`);
+      console.error(`Произошла ошибка во время проверки кода ${code}: ${e}`);
+      throw new Error(`Произошла ошибка во время проверки кода ${code} в базе данных`);
     }
   }
 }

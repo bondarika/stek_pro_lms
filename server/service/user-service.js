@@ -10,7 +10,7 @@ class UserService {
   async registration(email, password, codeId) {
     const candidate = await prisma.user.findUnique({ where: { email } });
     if (candidate) {
-      throw ApiError.BadRequest(`User with email ${email} already exists`);
+      throw ApiError.BadRequest(`Пользователь с эл. почтой ${email} уже существует`);
     }
     const hashPassword = await bcrypt.hash(password, 5);
     const activationLink = uuid.v4();
@@ -35,7 +35,7 @@ class UserService {
   async activate(activationLink) {
     const user = await prisma.user.findUnique({ where: { activationLink } });
     if (!user) {
-      throw ApiError.BadRequest('Incorrect activation link');
+      throw ApiError.BadRequest('Некорректная ссылка активации');
     }
     user.isActivated = true;
     await prisma.user.update({

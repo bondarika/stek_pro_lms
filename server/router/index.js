@@ -1,9 +1,23 @@
 ﻿const Router = require('express').Router;
 const userController = require('../controllers/user-controller');
 const router = new Router();
+const { body } = require('express-validator');
 
 router.post('/check', userController.check);
-router.post('/registration', userController.registration);
+router.post(
+  '/registration',
+  [
+    body('email').isEmail(),
+    body('password')
+    .isLength({ min: 8, max: 32 })
+    .matches(/^[A-Za-z0-9#?!@$%^&*-]+$/).withMessage('Пароль должен содержать только буквы латинского алфавита, цифры и специальные символы')
+      .matches(/^(?=.*?[A-Z])/).withMessage('Пароль должен содержать хотя бы одну заглавную букву')
+      .matches(/^(?=.*?[a-z])/).withMessage('Пароль должен содержать хотя бы одну строчную букву')
+      .matches(/^(?=.*?[0-9])/).withMessage('Пароль должен содержать хотя бы одну строчную цифру')
+      .matches(/^(?=.*?[#?!@$%^&*_\-+=])/).withMessage('Пароль должен содержать хотя бы один специальный символ (#?!@$%^&*_-+=')
+  ],
+  userController.registration
+);
 router.get('/activate/:link', userController.activate);
 // router.post('/login', userController.login);
 // router.post('/logout', userController.logout);
