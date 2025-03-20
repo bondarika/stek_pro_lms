@@ -2,7 +2,6 @@
 const codeService = require('../service/code-service');
 const { validationResult } = require('express-validator');
 const ApiError = require('../exceptions/api-error');
-const { user } = require('../prisma/prisma');
 
 class UserController {
   async check(req, res, next) {
