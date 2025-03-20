@@ -10,7 +10,9 @@ class UserService {
   async registration(email, password, codeId) {
     const candidate = await prisma.user.findUnique({ where: { email } });
     if (candidate) {
-      throw ApiError.BadRequest(`Пользователь с эл. почтой ${email} уже существует`);
+      throw ApiError.BadRequest(
+        `Пользователь с эл. почтой ${email} уже существует`
+      );
     }
     const hashPassword = await bcrypt.hash(password, 5);
     const activationLink = uuid.v4();
@@ -64,7 +66,7 @@ class UserService {
     return token;
   }
 
-  async refresh(refreshToken) { 
+  async refresh(refreshToken) {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError();
     }
@@ -73,7 +75,7 @@ class UserService {
     if (!userData || !tokenFromDb) {
       throw ApiError.UnauthorizedError();
     }
-    const user = await prisma.user.findUnique( {where: { id: userData.id }});
+    const user = await prisma.user.findUnique({ where: { id: userData.id } });
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
@@ -85,6 +87,5 @@ class UserService {
     return users;
   }
 }
-
 
 module.exports = new UserService();

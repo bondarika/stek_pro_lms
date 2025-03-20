@@ -7,7 +7,9 @@ class CodeService {
       return existingCode ? existingCode : null;
     } catch (e) {
       console.error(`Произошла ошибка во время проверки кода ${code}: ${e}`);
-      throw new Error(`Произошла ошибка во время проверки кода ${code} в базе данных`);
+      throw new Error(
+        `Произошла ошибка во время проверки кода ${code} в базе данных`
+      );
     }
   }
 }

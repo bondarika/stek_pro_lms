@@ -14,7 +14,7 @@ class TokenService {
       refreshToken
     };
   }
-  
+
   validateAccessToken(token) {
     try {
       const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
@@ -24,7 +24,7 @@ class TokenService {
     }
   }
 
-    validateRefreshToken(token) {
+  validateRefreshToken(token) {
     try {
       const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
       return userData;
