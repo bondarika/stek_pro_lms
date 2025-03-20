@@ -1,9 +1,9 @@
-import Button from "./components/Button/Button";
+import LoginForm from './components/AuthForm/AuthForm';
 
 function App() {
   return (
     <>
-      <Button>войти</Button>
+      <LoginForm />
     </>
   );
 }

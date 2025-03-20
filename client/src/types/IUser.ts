@@ -1,5 +1,5 @@
 ﻿export default interface IUser {
-    email: string;
-    id: number;
-    isActivated: boolean;
+  email: string;
+  id: number;
+  isActivated: boolean;
 }

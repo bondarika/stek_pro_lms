@@ -1,0 +1,56 @@
+﻿@import '@/App.scss';
+@import '@/styles/variables.scss';
+
+.authform {
+  display: flex;
+  flex-direction: column;
+  gap: rem(24);
+  background-color: $white-opacity-70;
+  width: fit-content;
+  border-radius: 20px;
+  padding: 32px 32px 20px 32px;
+  &_tabs {
+    display: flex;
+    flex-direction: row;
+    gap: rem(16);
+  }
+  h1 {
+    font-family: Neutral Face;
+    font-weight: bold;
+    font-size: rem(28);
+    color: $gray-200;
+    margin: 0;
+    &.active {
+      color: $black;
+    }
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: rem(20);
+    font-family: 'Coolvetica';
+    width: fit-content;
+    input {
+      box-sizing: border-box;
+      width: rem(476);
+      height: rem(56);
+      border: 2px solid transparent;
+      outline: none;
+      border-radius: 10px;
+      font-family: 'Coolvetica';
+      font-size: rem(20);
+      padding: 0px;
+      text-indent: rem(20);
+      caret-color: $black;
+      &::placeholder {
+        color: $gray-100;
+      }
+      &:focus {
+        border: 2px solid $black;
+        &::placeholder {
+          color: transparent;
+        }
+      }
+    }
+  }
+}

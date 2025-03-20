@@ -1,9 +1,9 @@
-﻿@import "./styles/fonts.scss";
+﻿@import './styles/fonts.scss';
 
 :root {
   font-family: system-ui, Coolvetica, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
   font-weight: 400;
+  line-height: none;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -22,4 +22,6 @@ html {
   @media (max-width: 530px) {
     --refRes: 390;
   }
+
+  background-color: #818181;
 }
