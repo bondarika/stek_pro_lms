@@ -1,5 +1,4 @@
-﻿import classNames from 'classnames';
-import Button from '../Button/Button';
+﻿import Button from '../Button/Button';
 import styles from './AuthForm.module.scss';
 import { FC, useState } from 'react';
 
