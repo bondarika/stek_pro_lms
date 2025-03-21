@@ -2,6 +2,15 @@
 const prisma = require('../prisma/prisma');
 
 class TokenService {
+  generateToken(payload) {
+    const codeToken = jwt.sign(payload, process.env.JWT_CODE_SECRET, {
+      expiresIn: '10m'
+    });
+    return {
+      codeToken
+    };
+  }
+
   generateTokens(payload) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
       expiresIn: '30s'
@@ -13,6 +22,15 @@ class TokenService {
       accessToken,
       refreshToken
     };
+  }
+
+  validateCodeToken(token) {
+    try {
+      const codeData = jwt.verify(token, process.env.JWT_CODE_SECRET);
+      return codeData;
+    } catch (e) {
+      return null;
+    }
   }
 
   validateAccessToken(token) {

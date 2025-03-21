@@ -1,16 +1,20 @@
 ﻿const prisma = require('../prisma/prisma');
+const ApiError = require('../exceptions/api-error');
+const tokenService = require('./token-service');
+const CodeDto = require('../dtos/code-dto');
 
 class CodeService {
   async checkCode(code) {
-    try {
-      const existingCode = await prisma.code.findUnique({ where: { code } });
-      return existingCode ? existingCode : null;
-    } catch (e) {
-      console.error(`Произошла ошибка во время проверки кода ${code}: ${e}`);
-      throw new Error(
-        `Произошла ошибка во время проверки кода ${code} в базе данных`
-      );
+    const existingCode = await prisma.code.findUnique({ where: { code } });
+    if (!existingCode) {
+      throw ApiError.BadRequest('Такого кода не существует');
     }
+    if (existingCode.usageLimit === existingCode.usedCount) {
+      throw ApiError.BadRequest('Код уже использован');
+    }
+    const codeDto = new CodeDto(existingCode);
+    const token = tokenService.generateToken({ ...codeDto });
+    return { ...token, code: codeDto };
   }
 }
 

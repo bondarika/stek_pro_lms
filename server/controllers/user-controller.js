@@ -7,8 +7,8 @@ class UserController {
   async check(req, res, next) {
     try {
       const { code } = req.body;
-      const result = await codeService.checkCode(code);
-      return res.json(result);
+      const codeData = await codeService.checkCode(code);
+      return res.json(codeData);
     } catch (e) {
       next(e);
     }
@@ -20,7 +20,8 @@ class UserController {
       if (!errors.isEmpty()) {
         return next(ApiError.BadRequest('Ошибка валидации', errors.array()));
       }
-      const { email, password, codeId } = req.body;
+      const { email, password } = req.body;
+      const codeId = req.codeId; 
       const userData = await userService.registration(email, password, codeId);
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,

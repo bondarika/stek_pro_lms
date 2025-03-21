@@ -31,6 +31,16 @@ class UserService {
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    await prisma.code.update({
+      where: { id: codeId },
+      data: { usedCount: { increment: 1 } }
+    });
+    await prisma.userCodes.create({
+      data: {
+        userId: user.id,
+        codeId: codeId
+      }
+    });
     return { ...tokens, user: userDto };
   }
 
