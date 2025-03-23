@@ -4,7 +4,7 @@ const tokenService = require('./token-service');
 const CodeDto = require('../dtos/code-dto');
 
 class CodeService {
-  async checkCode(code) {
+  async validateCode(code) {
     const existingCode = await prisma.code.findUnique({ where: { code } });
     if (!existingCode) {
       throw ApiError.BadRequest('Такого кода не существует');

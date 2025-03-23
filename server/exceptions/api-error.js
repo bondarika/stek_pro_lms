@@ -8,7 +8,7 @@
   }
 
   static UnauthorizedError() {
-    return new ApiError(401, 'Пользователь на авторизован');
+    return new ApiError(401, 'Пользователь не авторизован');
   }
 
   static BadRequest(message, errors = []) {

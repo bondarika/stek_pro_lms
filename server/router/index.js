@@ -5,7 +5,7 @@ const { body } = require('express-validator');
 const authMiddleware = require('../middleware/auth-middleware');
 const codeMiddleware = require('../middleware/code-middleware');
 
-router.post('/check', userController.check);
+router.post('/validate', userController.validate);
 router.post(
   '/registration',
   codeMiddleware,

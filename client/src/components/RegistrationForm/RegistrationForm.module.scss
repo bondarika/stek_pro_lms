@@ -1,0 +1,8 @@
+﻿@import '@/App.scss';
+@import '@/styles/variables.scss';
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: rem(20);
+}
