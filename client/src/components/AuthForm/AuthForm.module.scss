@@ -4,15 +4,29 @@
 .authform {
   display: flex;
   flex-direction: column;
-  gap: rem(24);
   background-color: $white-opacity-70;
   width: fit-content;
   border-radius: 20px;
   padding: 32px 32px 20px 32px;
+  &_error {
+    width: rem(334);
+    display: flex;
+    align-items: center;
+    font-family: 'Coolvetica';
+    color: $pink-200;
+    font-size: rem(20);
+    margin-bottom: rem(20);
+    img {
+      width: rem(38);
+      height: rem(37);
+      margin-right: 8px;
+    }
+  }
   &_tabs {
     display: flex;
     flex-direction: row;
     gap: rem(16);
+    margin-bottom: rem(24);
   }
   &_buttons {
     display: flex;

@@ -6,5 +6,5 @@ module.exports = (err, req, res, next) => {
       .status(err.status)
       .json({ message: err.message, errors: err.errors });
   }
-  return res.status(500).json({ message: 'Произошла непредвиденная ошибка' });
+  return res.status(500).json({ message: 'произошла непредвиденная ошибка' });
 };

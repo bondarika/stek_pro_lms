@@ -11,7 +11,7 @@ class UserService {
     const candidate = await prisma.user.findUnique({ where: { email } });
     if (candidate) {
       throw ApiError.BadRequest(
-        `Пользователь с эл. почтой ${email} уже существует`
+        `пользователь уже существует`
       );
     }
     const hashPassword = await bcrypt.hash(password, 5);
@@ -47,7 +47,7 @@ class UserService {
   async activate(activationLink) {
     const user = await prisma.user.findUnique({ where: { activationLink } });
     if (!user) {
-      throw ApiError.BadRequest('Некорректная ссылка активации');
+      throw ApiError.BadRequest('некорректная ссылка активации');
     }
     user.isActivated = true;
     await prisma.user.update({
@@ -59,11 +59,11 @@ class UserService {
   async login(email, password) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      throw ApiError.BadRequest('Пользователь с таким email не найден');
+      throw ApiError.BadRequest(`неверная электронная почта`);
     }
     const isPassEquals = await bcrypt.compare(password, user.password);
     if (!isPassEquals) {
-      throw ApiError.BadRequest('Неверный пароль');
+      throw ApiError.BadRequest('неверный пароль');
     }
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });

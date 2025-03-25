@@ -11,6 +11,7 @@ export default class Store {
   isAuth = false;
   step = 1;
   isLoading = false;
+  error: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {
@@ -35,6 +36,14 @@ export default class Store {
     this.isLoading = bool;
   }
 
+  setError(message: string | null) {
+    this.error = message;
+  }
+
+  clearError() {
+    this.error = null;
+  }
+
   async validation(code: string) {
     try {
       const response = await AuthService.validation(code);
@@ -43,9 +52,10 @@ export default class Store {
       if (response.status === 200) {
         localStorage.setItem('codeToken', response.data.codeToken);
         this.step++;
+        this.clearError();
       }
     } catch (e) {
-      console.log(e.response?.data?.message);
+      this.setError(e.response?.data?.message || 'ошибка валидации кода');
     }
   }
 
@@ -57,8 +67,11 @@ export default class Store {
       this.setAuth(true);
       console.log(this.isAuth);
       this.setUser(response.data.user);
+      this.clearError();
     } catch (e) {
-      console.log(e.response?.data?.message);
+      this.setError(
+        e.response?.data?.message || 'произошла ошибка при попытке войти'
+      );
     }
   }
 
@@ -69,8 +82,12 @@ export default class Store {
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
+      this.clearError();
     } catch (e) {
-      console.log(e.response?.data?.message);
+      this.setError(
+        e.response?.data?.message ||
+          'произошла ошибка при попытке зарегистрироваться '
+      );
     }
   }
 
@@ -81,8 +98,11 @@ export default class Store {
       localStorage.removeItem('token');
       this.setAuth(false);
       this.setUser({} as IUser);
+      this.clearError();
     } catch (e) {
-      console.log(e.response?.data?.message);
+      this.setError(
+        e.response?.data?.message || 'произошла ошибка при попытке выйти'
+      );
     }
   }
 
@@ -95,20 +115,26 @@ export default class Store {
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
+      this.clearError();
     } catch (e) {
-      console.log(e.response?.data?.message);
+      this.setError(
+        e.response?.data?.message ||
+          'произошла ошибка при проверке авторизации пользователя'
+      );
     } finally {
       this.setIsLoading(false);
     }
   }
 
   nextStep = () => {
+    this.clearError();
     if (this.step == 2) {
       this.step++;
     }
   };
 
   prevStep = () => {
+    this.clearError();
     if (this.step == 2) {
       this.step--;
     }

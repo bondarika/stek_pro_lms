@@ -7,10 +7,12 @@ class CodeService {
   async validateCode(code) {
     const existingCode = await prisma.code.findUnique({ where: { code } });
     if (!existingCode) {
-      throw ApiError.BadRequest('Такого кода не существует');
+      throw ApiError.BadRequest(`
+        такого кода не существует ☹️ 
+        попробуйте ещё раз!`);
     }
     if (existingCode.usageLimit === existingCode.usedCount) {
-      throw ApiError.BadRequest('Код уже использован');
+      throw ApiError.BadRequest('введённый код был активирован ранее!');
     }
     const codeDto = new CodeDto(existingCode);
     const token = tokenService.generateToken({ ...codeDto });

@@ -18,11 +18,13 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return next(ApiError.BadRequest('Ошибка валидации', errors.array()));
+        return next(ApiError.BadRequest(`
+          слабый пароль! 
+          придумайте понадежнее`
+          , errors.array()));
       }
       const { email, password } = req.body;
       const codeId = req.codeId;
-      console.log(codeId);
       const userData = await userService.registration(email, password, codeId);
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,

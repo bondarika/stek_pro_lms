@@ -1,5 +1,33 @@
 ﻿@import '@/App.scss';
 @import '@/styles/variables.scss';
+.message {
+  width: rem(334);
+  display: flex;
+  align-items: center;
+  font-family: 'Coolvetica';
+  color: $gray-200;
+  font-size: rem(20);
+  margin-bottom: rem(20);
+  &_support {
+    font-size: rem(14);
+    font-family: 'Coolvetica';
+    color: $gray-100;
+    margin-top: rem(16);
+    justify-self: center;
+    text-align: center;
+    &_mail {
+      display: inline-block;
+      color: $gray-200;
+      text-decoration: none;
+    }
+  }
+  img {
+    fill: $gray-200;
+    width: rem(38);
+    height: rem(37);
+    margin-right: 8px;
+  }
+}
 
 .buttons {
   display: flex;

@@ -4,6 +4,7 @@ import Button from '../Button/Button';
 import RegistrationForm from '../RegistrationForm/RegistrationForm';
 import styles from './AuthForm.module.scss';
 import { FC, useContext, useState } from 'react';
+import info from '@/assets/icons/info-pink.svg';
 
 type AuthTab = 'login' | 'registration';
 
@@ -11,6 +12,11 @@ const AuthForm: FC = function AuthForm() {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await store.login(email, password);
+  };
+
+  const handleTabChange = (tab: AuthTab) => {
+    setActiveTab(tab);
+    store.clearError();
   };
 
   const [activeTab, setActiveTab] = useState<AuthTab>('login');
@@ -23,18 +29,23 @@ const AuthForm: FC = function AuthForm() {
       <div className={styles.authform_tabs}>
         <h1
           className={activeTab === 'login' ? styles.active : ''}
-          onClick={() => setActiveTab('login')}
+          onClick={() => handleTabChange('login')}
         >
           ВХОД
         </h1>
         <h1
           className={activeTab === 'registration' ? styles.active : ''}
-          onClick={() => setActiveTab('registration')}
+          onClick={() => handleTabChange('registration')}
         >
           РЕГИСТРАЦИЯ
         </h1>
       </div>
-
+      {store.error && (
+        <div className={styles.authform_error}>
+          <img src={info} />
+          {store.error}
+        </div>
+      )}
       {activeTab === 'login' ? (
         <form onSubmit={handleLogin}>
           <input
