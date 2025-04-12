@@ -7,7 +7,7 @@ const UserDto = require('../dtos/user-dto');
 const ApiError = require('../exceptions/api-error');
 
 class UserService {
-  async registration(email, password, codeId) {
+  async registration(name, surname, email, password, codeId) {
     const candidate = await prisma.user.findUnique({ where: { email } });
     if (candidate) {
       throw ApiError.BadRequest(
@@ -18,6 +18,8 @@ class UserService {
     const activationLink = uuid.v4();
     const user = await prisma.user.create({
       data: {
+        name,
+        surname,
         email,
         password: hashPassword,
         activationLink,

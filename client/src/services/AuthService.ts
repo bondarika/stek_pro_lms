@@ -18,6 +18,8 @@ export default class AuthService {
   }
 
   static async registration(
+    name: string,
+    surname: string,
     email: string,
     password: string
   ): Promise<AxiosResponse<AuthResponse>> {
@@ -25,7 +27,7 @@ export default class AuthService {
     console.log(`Привет это ${codeToken}`);
     return api.post<AuthResponse>(
       '/registration',
-      { email, password },
+      { name, surname, email, password },
       {
         headers: {
           verification: `Bearer ${codeToken}`

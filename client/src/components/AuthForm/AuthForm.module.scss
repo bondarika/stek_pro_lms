@@ -6,8 +6,8 @@
   flex-direction: column;
   background-color: $white-opacity-70;
   width: fit-content;
-  border-radius: 20px;
-  padding: 32px 32px 20px 32px;
+  border-radius: rem(20);
+  padding: rem(32) rem(32) rem(20) rem(32);
   &_error {
     width: rem(334);
     display: flex;
@@ -19,7 +19,7 @@
     img {
       width: rem(38);
       height: rem(37);
-      margin-right: 8px;
+      margin-right: rem(8);
     }
   }
   &_tabs {
@@ -55,7 +55,7 @@
       height: rem(56);
       border: 2px solid transparent;
       outline: none;
-      border-radius: 10px;
+      border-radius: rem(10);
       font-family: 'Coolvetica';
       font-size: rem(20);
       padding: 0px rem(20) 0px 0px;

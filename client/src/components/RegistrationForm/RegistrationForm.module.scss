@@ -32,5 +32,9 @@
 .buttons {
   display: flex;
   flex-direction: column;
-  gap: rem(20);
+  &_later {
+    margin-top: rem(20);
+    background-color: $white;
+    color: $pink-200;
+  }
 }

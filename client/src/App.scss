@@ -1,6 +1,7 @@
 ﻿@import './styles/fonts.scss';
 
 :root {
+  height: 100%;
   font-family: system-ui, Coolvetica, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: none;
@@ -16,6 +17,7 @@
 }
 
 html {
+  height: 100%;
   --refRes: 1920;
   font-size: calc(100vw / var(--refRes) * 10);
 
@@ -28,4 +30,11 @@ html {
 
 p {
   margin: 0;
+}
+
+body {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

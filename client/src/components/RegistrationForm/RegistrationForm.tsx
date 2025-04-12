@@ -8,6 +8,9 @@ import info from '@/assets/icons/info-gray.svg';
 const RegistrationForm: FC = observer(() => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [surname, setSurname] = useState<string>('');
+
   const { store } = useContext(Context);
   const [code, setCodeInput] = useState<string>('');
 
@@ -18,17 +21,19 @@ const RegistrationForm: FC = observer(() => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    store.registration(email, password);
+    store.registration(name, surname, email, password);
   };
 
   switch (store.step) {
     case 1:
       return (
         <>
-          <div className={styles.message}>
-            <img src={info} />
-            <p>регистрация доступна только при наличии специального кода</p>
-          </div>
+          {!store.error && (
+            <div className={styles.message}>
+              <img src={info} />
+              <p>регистрация доступна только при наличии специального кода</p>
+            </div>
+          )}
           <form onSubmit={handleCodeSubmit}>
             <input
               type="text"
@@ -61,13 +66,30 @@ const RegistrationForm: FC = observer(() => {
           <Button onClick={() => store.nextStep()}>
             продолжить регистрацию
           </Button>
-          <Button onClick={() => store.prevStep()}>активировать позже</Button>{' '}
+          <Button
+            onClick={() => store.prevStep()}
+            className={styles.buttons_later}
+          >
+            активировать позже
+          </Button>
           {/* спросить куда эта кнопка должна перенаправлять */}
         </div>
       );
     case 3:
       return (
         <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="фамилия"
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="имя"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
           <input
             type="email"
             placeholder="электронная почта"
@@ -77,6 +99,12 @@ const RegistrationForm: FC = observer(() => {
           <input
             type="password"
             placeholder="пароль"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="повторите пароль"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

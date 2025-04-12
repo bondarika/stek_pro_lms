@@ -23,9 +23,9 @@ class UserController {
           придумайте понадежнее`
           , errors.array()));
       }
-      const { email, password } = req.body;
+      const { name, surname, email, password } = req.body;
       const codeId = req.codeId;
-      const userData = await userService.registration(email, password, codeId);
+      const userData = await userService.registration(name, surname, email, password, codeId);
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true
