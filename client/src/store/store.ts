@@ -1,12 +1,12 @@
 ﻿import { action, makeAutoObservable } from 'mobx';
-import IUser from '../types/IUser';
+import User from '../types/User';
 import AuthService from '../services/AuthService';
 import { API_URL } from '../http';
 import { AuthResponse } from '../types/response/AuthResponse';
 import axios from 'axios';
 
 export default class Store {
-  user = {} as IUser;
+  user = {} as ;
   isVerified = false;
   isAuth = false;
   step = 1;
@@ -28,7 +28,7 @@ export default class Store {
     this.isAuth = bool;
   }
 
-  setUser(user: IUser) {
+  setUser(user: User) {
     this.user = user;
   }
 
@@ -97,7 +97,7 @@ export default class Store {
       console.log(response);
       localStorage.removeItem('token');
       this.setAuth(false);
-      this.setUser({} as IUser);
+      this.setUser({} as User);
       this.clearError();
     } catch (e) {
       this.setError(

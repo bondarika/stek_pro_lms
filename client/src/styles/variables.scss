@@ -1,9 +1,12 @@
-﻿$black: #2B2B2B;
+﻿$black: rgba(43, 43, 43, 1);
 $gray-100: rgba(60, 60, 67, 0.3);
 $gray-200: rgba(77, 77, 77, 0.6);
+$gray-300: rgba(105, 105, 105, 1);
+
 $white-opacity-70: rgba(255, 255, 255, 0.7);
-$white: #fffbff;
-$pink-100: #e89bb4; // Самый светлый (disabled)
-$pink-200: #d95781; // Основной цвет (default)
-$pink-300: #d23768; // Hover
-$pink-400: #b72a56; // Active
+$white: rgba(255, 251, 255, 1);
+
+$pink-100: rgba(232, 155, 180, 1);
+$pink-200: rgba(217, 87, 129, 1);
+$pink-300: rgba(210, 55, 104, 1);
+$pink-400: rgba(183, 42, 86, 1);

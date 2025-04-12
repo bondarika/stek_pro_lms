@@ -1,9 +1,9 @@
 ﻿import api from '../http';
-import IUser from '../types/IUser';
+import User from '../types/User';
 import type { AxiosResponse } from 'axios';
 
 export default class UserService {
-  static fetchUsers(): Promise<AxiosResponse<IUser[]>> {
-    return api.get<IUser[]>('/users');
+  static fetchUsers(): Promise<AxiosResponse<User[]>> {
+    return api.get<User[]>('/users');
   }
 }

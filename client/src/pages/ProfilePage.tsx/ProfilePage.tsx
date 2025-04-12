@@ -2,17 +2,22 @@
 import Button from '../../components/Button/Button';
 import { useContext } from 'react';
 import { Context } from '../../main';
+import Header from '../../components/Header/Header';
+import styles from './ProfilePage.module.scss';
 
 const ProfilePage = observer(() => {
   const { store } = useContext(Context);
   return (
     <>
-      <h1>
-        {store.user.isActivated
-          ? 'Аккаунт активирован'
-          : 'Аккаунт не активирован'}
-      </h1>
-      <Button onClick={() => store.logout()}>выйти</Button>
+      <Header pageTitle="Профиль" />
+      <div className={styles.profilePage}>
+        <h1>
+          {store.user.isActivated
+            ? 'Аккаунт активирован'
+            : 'Аккаунт не активирован'}
+        </h1>
+        <Button onClick={() => store.logout()}>выйти</Button>
+      </div>
     </>
   );
 });
