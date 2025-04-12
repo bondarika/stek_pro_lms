@@ -7,9 +7,10 @@ import styles from './ProfilePage.module.scss';
 
 const ProfilePage = observer(() => {
   const { store } = useContext(Context);
+
   return (
     <>
-      <Header pageTitle="Профиль" />
+      <Header navigation="/courses" pageTitle="Курсы" />
       <div className={styles.profilePage}>
         <h1>
           {store.user.isActivated

@@ -2,9 +2,9 @@
 @import '@/styles/variables.scss';
 
 .header {
-  position: fixed;
+  position: sticky;
   top: 0;
-  width: 100%;
+  width: calc(100% - 60px);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -13,8 +13,10 @@
   align-items: center;
   border-bottom: 2px solid $gray-300;
   &_title {
+    font-family: 'Neutral Face';
     font-size: rem(16);
     font-weight: 700;
     color: $black;
+    cursor: pointer;
   }
 }

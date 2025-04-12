@@ -6,7 +6,7 @@ import { AuthResponse } from '../types/response/AuthResponse';
 import axios from 'axios';
 
 export default class Store {
-  user = {} as ;
+  user = {} as User;
   isVerified = false;
   isAuth = false;
   step = 1;
