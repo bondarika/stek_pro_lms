@@ -19,4 +19,9 @@
     color: $black;
     cursor: pointer;
   }
+  button {
+    background-color: transparent;
+    width: fit-content;
+    height: fit-content;
+  }
 }

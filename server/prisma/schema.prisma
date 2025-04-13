@@ -12,7 +12,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
+model Token {
+  id           Int    @id @default(autoincrement())
+  userId       Int    @unique
+  user         User   @relation(fields: [userId], references: [id])
+  refreshToken String @unique
+}
 model User {
   id             Int         @id @default(autoincrement())
   name           String
@@ -27,19 +32,31 @@ model User {
 }
 
 model Code {
-  id         Int         @id @default(autoincrement())
-  code       String      @unique
+  id         Int          @id @default(autoincrement())
+  code       String       @unique
   type       String
   usageLimit Int?
-  usedCount  Int         @default(0)
+  usedCount  Int          @default(0)
   users      UserCodes[]
+  codes      Course[]     @relation("CourseCodes")
+  CourseCode CourseCode[]
 }
 
-model Token {
-  id           Int    @id @default(autoincrement())
-  userId       Int    @unique
-  user         User   @relation(fields: [userId], references: [id])
-  refreshToken String @unique
+model Course {
+  id         Int          @id @default(autoincrement())
+  name       String
+  codes      Code[]       @relation("CourseCodes")
+  CourseCode CourseCode[]
+}
+
+model CourseCode {
+  courseId Int
+  codeId   Int
+
+  course Course @relation(fields: [courseId], references: [id])
+  code   Code   @relation(fields: [codeId], references: [id])
+
+  @@id([courseId, codeId])
 }
 
 model UserCodes {

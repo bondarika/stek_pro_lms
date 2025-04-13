@@ -98,6 +98,34 @@ class UserService {
     const users = await prisma.user.findMany();
     return users;
   }
+
+//сейчас
+async getUserCourses(userId) {
+  const userCodes = await prisma.userCodes.findMany({
+    where: { userId },
+    include: {
+      code: {
+        include: {
+          CourseCode: {
+            include: {
+              course: true 
+            }
+          }
+        }
+      }
+    }
+  });
+
+  const courses = userCodes.flatMap((userCode) =>
+    userCode.code.CourseCode.map((courseCode) => courseCode.course)
+  );
+
+  const uniqueCourses = Array.from(
+    new Map(courses.map((course) => [course.id, course])).values()
+  );
+
+  return uniqueCourses;
+}
 }
 
 module.exports = new UserService();

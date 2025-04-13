@@ -1,13 +1,25 @@
 ﻿@import '@/App.scss';
 @import '@/styles/variables.scss';
 
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../../assets/images/background.png');
+  background-size: fill;
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center;
+}
+
 .authform {
   display: flex;
   flex-direction: column;
-  background-color: $white-opacity-70;
   width: fit-content;
   border-radius: rem(20);
   padding: rem(32) rem(32) rem(20) rem(32);
+  background-color: $white-opacity-70;
   &_error {
     width: rem(334);
     display: flex;

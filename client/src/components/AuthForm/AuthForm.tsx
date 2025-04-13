@@ -25,46 +25,48 @@ const AuthForm: FC = function AuthForm() {
   const { store } = useContext(Context);
 
   return (
-    <div className={styles.authform}>
-      <div className={styles.authform_tabs}>
-        <h1
-          className={activeTab === 'login' ? styles.active : ''}
-          onClick={() => handleTabChange('login')}
-        >
-          ВХОД
-        </h1>
-        <h1
-          className={activeTab === 'registration' ? styles.active : ''}
-          onClick={() => handleTabChange('registration')}
-        >
-          РЕГИСТРАЦИЯ
-        </h1>
-      </div>
-      {store.error && (
-        <div className={styles.authform_error}>
-          <img src={info} />
-          {store.error}
+    <div className={styles.container}>
+      <div className={styles.authform}>
+        <div className={styles.authform_tabs}>
+          <h1
+            className={activeTab === 'login' ? styles.active : ''}
+            onClick={() => handleTabChange('login')}
+          >
+            ВХОД
+          </h1>
+          <h1
+            className={activeTab === 'registration' ? styles.active : ''}
+            onClick={() => handleTabChange('registration')}
+          >
+            РЕГИСТРАЦИЯ
+          </h1>
         </div>
-      )}
-      {activeTab === 'login' ? (
-        <form onSubmit={handleLogin}>
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            placeholder="электронная почта"
-            value={email}
-          />
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            placeholder="пароль"
-            value={password}
-          />
-          <Button type="submit">войти</Button>
-        </form>
-      ) : (
-        <RegistrationForm />
-      )}
+        {store.error && (
+          <div className={styles.authform_error}>
+            <img src={info} />
+            {store.error}
+          </div>
+        )}
+        {activeTab === 'login' ? (
+          <form onSubmit={handleLogin}>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              placeholder="электронная почта"
+              value={email}
+            />
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="пароль"
+              value={password}
+            />
+            <Button type="submit">войти</Button>
+          </form>
+        ) : (
+          <RegistrationForm />
+        )}
+      </div>
     </div>
   );
 };

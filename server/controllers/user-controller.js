@@ -94,6 +94,16 @@ class UserController {
       next(e);
     }
   }
+
+//сейчас
+  async getCourses(req, res, next) {
+    try {
+      const courses = await userService.getUserCourses();
+      return res.json(courses);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new UserController();
