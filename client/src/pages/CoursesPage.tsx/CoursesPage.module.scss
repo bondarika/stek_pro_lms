@@ -1,1 +1,14 @@
-﻿
+﻿@import '@/App.scss';
+@import '@/styles/variables.scss';
+
+.coursesPage {
+  display: flex;
+  height: 100vh;
+  aside {
+    width: rem(345);
+    background: #f8f8f8;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+}

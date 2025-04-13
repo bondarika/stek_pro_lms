@@ -1,0 +1,27 @@
+﻿@import '@/App.scss';
+@import '@/styles/variables.scss';
+
+.courseButton {
+  font-family: 'Neutral Face';
+  border: none;
+  border-radius: 12px;
+  background-color: rgba(46, 94, 170, 1);
+  color: $white;
+  font-weight: 700;
+  font-size: rem(20);
+  width: rem(442);
+  height: rem(300);
+//   text-align: start; 
+  cursor: pointer;
+  &:disabled {
+    background-color: $pink-100;
+    color: rgba(255, 251, 255, 0.7);
+    pointer-events: none;
+  }
+  &:hover {
+    background-color: $pink-300;
+  }
+  &:active {
+    background-color: $pink-400;
+  }
+}

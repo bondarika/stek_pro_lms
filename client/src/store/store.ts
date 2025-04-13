@@ -4,6 +4,8 @@ import AuthService from '../services/AuthService';
 import { API_URL } from '../http';
 import { AuthResponse } from '../types/response/AuthResponse';
 import axios from 'axios';
+import Course from '../types/Course';
+import UserService from '../services/UserService';
 
 export default class Store {
   user = {} as User;
@@ -12,6 +14,7 @@ export default class Store {
   step = 1;
   isLoading = false;
   error: string | null = null;
+  courses: Course[] = [];
 
   constructor() {
     makeAutoObservable(this, {
@@ -38,6 +41,10 @@ export default class Store {
 
   setError(message: string | null) {
     this.error = message;
+  }
+
+  setCourses(courses: Course[]) {
+    this.courses = courses;
   }
 
   clearError() {
@@ -67,6 +74,7 @@ export default class Store {
       this.setAuth(true);
       console.log(this.isAuth);
       this.setUser(response.data.user);
+      await this.fetchCourses();
       this.clearError();
     } catch (e) {
       this.setError(
@@ -75,13 +83,24 @@ export default class Store {
     }
   }
 
-  async registration(name: string, surname: string, email: string, password: string) {
+  async registration(
+    name: string,
+    surname: string,
+    email: string,
+    password: string
+  ) {
     try {
-      const response = await AuthService.registration(name, surname, email, password);
+      const response = await AuthService.registration(
+        name,
+        surname,
+        email,
+        password
+      );
       console.log(response);
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
+      await this.fetchCourses();
       this.clearError();
     } catch (e) {
       this.setError(
@@ -115,6 +134,7 @@ export default class Store {
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
+      await this.fetchCourses();
       this.clearError();
     } catch (e) {
       this.setError(
@@ -123,6 +143,18 @@ export default class Store {
       );
     } finally {
       this.setIsLoading(false);
+    }
+  }
+
+  async fetchCourses() {
+    try {
+      const response = await UserService.fetchUserCourses();
+      this.setCourses(response.data);
+      this.clearError();
+    } catch (e) {
+      this.setError(
+        e.response?.data?.message || 'произошла ошибка при загрузке курсов'
+      );
     }
   }
 

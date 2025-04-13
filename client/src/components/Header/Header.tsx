@@ -1,4 +1,4 @@
-﻿import HeaderProps from '../../types/props/HeaderProps';
+﻿import HeaderProps from './types';
 import styles from './Header.module.scss';
 import lms_logo from '../../assets/icons/lms_logo.svg';
 import { useNavigate } from 'react-router-dom';
@@ -10,8 +10,8 @@ const Header = ({ pageTitle, navigation }: HeaderProps) => {
     <header className={styles.header}>
       <img src={lms_logo} alt="логотип" />
       <button
-        onClick={() => navigate(navigation)}
         className={styles.header_title}
+        onClick={() => navigate(navigation)}
       >
         {pageTitle}
       </button>
