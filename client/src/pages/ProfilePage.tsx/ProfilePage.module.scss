@@ -2,9 +2,16 @@
 @import '@/styles/variables.scss';
 
 .profilePage {
- &_courseButtons {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: rem(24);
+  &_courseButtons {
     display: flex;
     flex-direction: row;
     gap: rem(30);
- }
+  }
 }

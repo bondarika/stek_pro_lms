@@ -9,13 +9,11 @@
   align-items: center;
   background-image: url('../../assets/images/background.png');
   background-size: fill;
-  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-repeat: no-repeat;
   background-position: center;
 }
 
 .authform {
-  display: flex;
-  flex-direction: column;
   width: fit-content;
   border-radius: rem(20);
   padding: rem(32) rem(32) rem(20) rem(32);

@@ -10,17 +10,21 @@ const ProfilePage = observer(() => {
   const { store } = useContext(Context);
 
   return (
-    <>
+    <div
+      style={{
+        height: '100vh',
+        overflowY: 'hidden'
+      }}
+    >
       <Header pageTitle="Профиль" navigation="/" />
-      <div className={styles.profilePage}>
-        <h1>
+      <div>
+        {/* <h1>
           {store.user.isActivated
             ? 'Аккаунт активирован'
             : 'Аккаунт не активирован'}
-        </h1>
-        <Button onClick={() => store.logout()}>выйти</Button>
+        </h1> */}
       </div>
-      <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+      <div className={styles.profilePage}>
         <div className={styles.profilePage_courseButtons}>
           {store.courses.map((course) => (
             <CourseButton
@@ -30,8 +34,9 @@ const ProfilePage = observer(() => {
             ></CourseButton>
           ))}
         </div>
+        <Button onClick={() => store.logout()}>выйти</Button>
       </div>
-    </>
+    </div>
   );
 });
 

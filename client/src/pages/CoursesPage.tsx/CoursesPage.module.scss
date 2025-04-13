@@ -3,12 +3,124 @@
 
 .coursesPage {
   display: flex;
-  height: 100vh;
-  aside {
+  height: calc(100% - rem(60));
+  overflow: hidden;
+
+  &_navigation {
+    height: 100%;
+    overflow: scroll;
     width: rem(345);
-    background: #f8f8f8;
-    border-right: 1px solid #ddd;
-    padding: 20px;
     box-sizing: border-box;
+  }
+  &_title {
+    font-family: 'SF Pro Display';
+    font-size: rem(20);
+    color: $gray-200;
+    font-weight: 500;
+    padding: rem(30) 0 rem(15) rem(30);
+  }
+  &_chapterBlock {
+    padding: rem(30) 0 rem(30) rem(30);
+    border-bottom: 2px solid $gray-300;
+  }
+  &_module {
+    font-family: 'Neutral Face';
+    background-color: transparent;
+    width: fit-content;
+    height: fit-content;
+    color: $black;
+    font-size: rem(20);
+    font-weight: 700;
+    padding: 0 rem(30) rem(30);
+    cursor: default;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  &_lessonTitle {
+    width: 100%;
+    border-top: 2px solid $gray-300;
+    border-bottom: 2px solid $gray-300;
+  }
+  h3 {
+    width: rem(260);
+    color: $gray-400;
+    font-size: rem(32);
+    font-weight: 700;
+    cursor: default;
+    margin: 0;
+    padding: rem(30) 0 rem(30) rem(30);
+  }
+  &_chapter {
+    font-family: 'SF Pro Display';
+    background-color: transparent;
+    width: fit-content;
+    height: fit-content;
+    color: $black;
+    margin-bottom: rem(8);
+    font-size: rem(24);
+    font-weight: 600;
+    padding: 0;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  &_section {
+    display: flex;
+    flex-direction: column;
+    gap: rem(8);
+    &_block {
+      width: rem(285);
+      height: rem(38);
+      font-family: 'Neutral Face';
+      font-weight: 700;
+      font-size: rem(14);
+      text-align: start;
+      border-radius: rem(12);
+      padding: rem(12) rem(24);
+    }
+  }
+  &_navigationButtons {
+    display: flex;
+    gap: rem(55);
+    align-items: center;
+    background-color: $gray-400;
+    border-radius: rem(12);
+    padding: rem(10) rem(24);
+    margin: rem(110) 0 rem(60) 0;
+  }
+  &_navigationButton {
+    background-color: transparent;
+    width: rem(19);
+    height: rem(19);
+    padding: 0;
+    &:disabled {
+      background-color: transparent;
+    }
+  }
+  &_navigationIcon {
+    width: rem(19);
+    height: rem(19);
+  }
+  &_currentStep {
+    font-family: 'Neutral Face';
+    color: $white;
+    font-weight: 700;
+    font-size: rem(15);
+  }
+  &_content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 2px solid rgba(105, 105, 105, 1);
+    overflow: scroll;
+    max-height: calc(100vh - rem(60));
+  }
+  &_image {
+    width: rem(1230);
+    height: auto;
+    padding-top: rem(60);
   }
 }

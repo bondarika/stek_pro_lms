@@ -2,7 +2,6 @@
 @import '@/styles/variables.scss';
 
 :root {
-  height: 100%;
   font-family: system-ui, Coolvetica, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: none;
@@ -11,6 +10,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: $white;
 }
 
 @function rem($pixels) {
@@ -18,7 +18,6 @@
 }
 
 html {
-  height: 100%;
   --refRes: 1920;
   font-size: calc(100vw / var(--refRes) * 10);
 
