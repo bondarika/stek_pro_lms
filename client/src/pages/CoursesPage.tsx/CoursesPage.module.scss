@@ -5,10 +5,8 @@
   display: flex;
   height: calc(100% - rem(60));
   overflow: hidden;
-
   &_navigation {
-    height: 100%;
-    overflow: scroll;
+    overflow: auto;
     width: rem(345);
     box-sizing: border-box;
   }
@@ -113,10 +111,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    // justify-content: center;
     border-left: 2px solid rgba(105, 105, 105, 1);
-    overflow: scroll;
-    max-height: calc(100vh - rem(60));
+    overflow: auto;
   }
   &_image {
     width: rem(1230);

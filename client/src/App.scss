@@ -2,6 +2,7 @@
 @import '@/styles/variables.scss';
 
 :root {
+  height: 100%;
   font-family: system-ui, Coolvetica, Helvetica, Arial, sans-serif;
   font-weight: 400;
   line-height: none;
@@ -17,7 +18,13 @@
   @return calc($pixels / 10) + rem;
 }
 
+#root {
+  height: 100%;
+}
+
 html {
+  overflow: hidden;
+  height: 100%;
   --refRes: 1920;
   font-size: calc(100vw / var(--refRes) * 10);
 
@@ -29,4 +36,8 @@ html {
 body,
 p {
   margin: 0;
+}
+
+body {
+  height: 100%;
 }

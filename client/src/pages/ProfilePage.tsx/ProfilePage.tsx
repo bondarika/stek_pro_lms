@@ -34,7 +34,9 @@ const ProfilePage = observer(() => {
             ></CourseButton>
           ))}
         </div>
-        <Button onClick={() => store.logout()}>выйти</Button>
+        <Button onClick={() => store.logout()}>
+          выйти
+        </Button>
       </div>
     </div>
   );

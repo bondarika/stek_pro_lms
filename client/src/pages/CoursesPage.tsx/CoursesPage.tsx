@@ -1,20 +1,35 @@
 ﻿import { observer } from 'mobx-react-lite';
-import { useContext, useState } from 'react';
-import { Context } from '../../main';
+import { useEffect, useRef } from 'react';
 import Header from '../../components/Header/Header';
 import { groupedLessons } from '../../utils/groupLessons';
 import styles from './CoursesPage.module.scss';
 import { capitalizeText } from '../../utils/capitalizeText';
 import Next from '@/assets/icons/next/next.svg?react';
 import Prev from '@/assets/icons/prev/prev.svg?react';
+import { useNavigation } from '../../hooks/useNavigation';
 
 const CoursesPage = observer(() => {
-  const { store } = useContext(Context);
+  const [selectedModule, setSelectedModule] = useNavigation<number | null>(
+    'selectedModule',
+    1
+  );
+  const [selectedLesson, setSelectedLesson] = useNavigation<number | null>(
+    'selectedLesson',
+    1
+  );
+  const [selectedSection, setSelectedSection] = useNavigation<string>(
+    'selectedSection',
+    'теория'
+  );
+  const [currentStep, setCurrentStep] = useNavigation<number>('currentStep', 0);
 
-  const [selectedModule, setSelectedModule] = useState<number | null>(1);
-  const [selectedLesson, setSelectedLesson] = useState<number | null>(1);
-  const [selectedSection, setSelectedSection] = useState<string>('теория');
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [selectedModule, selectedLesson, selectedSection, currentStep]);
 
   const lessonData =
     selectedModule !== null && selectedLesson !== null
@@ -38,7 +53,6 @@ const CoursesPage = observer(() => {
       <Header pageTitle="Профиль" navigation="/" />
 
       <div className={styles.coursesPage}>
-        {/* Навигация */}
         <div className={styles.coursesPage_navigation}>
           <p className={styles.coursesPage_title}>курсы/введение в IOT/</p>
           {Array.from(groupedLessons.entries()).map(([mod, lessonsMap]) => (
@@ -53,7 +67,6 @@ const CoursesPage = observer(() => {
                 <h3>Управление светом 💡</h3>
               </div>
 
-              {/* Глава */}
               {Array.from(lessonsMap.entries()).map(([lesson, lessonData]) => (
                 <div key={lesson} className={styles.coursesPage_chapterBlock}>
                   <button
@@ -66,7 +79,6 @@ const CoursesPage = observer(() => {
                   >
                     {lesson}. {capitalizeText(lessonData.lessonName)}
                   </button>
-                  {/* Секция */}
                   <div className={styles.coursesPage_section}>
                     {Array.from(lessonData.sections.keys())
                       .sort((a, b) => {
@@ -101,128 +113,121 @@ const CoursesPage = observer(() => {
           ))}
         </div>
 
-        {/* Содержимое */}
-        <div className={styles.coursesPage_content}>
+        <div className={styles.coursesPage_content} ref={contentRef}>
           <>
             <img
               src={currentImage}
               alt="slide"
               className={styles.coursesPage_image}
             />
-            <div style={{ marginTop: 20 }}>
-              <div className={styles.coursesPage_navigationButtons}>
-                <button
-                  disabled={
-                    currentStep === 0 &&
-                    currentSectionIndex === 0 &&
-                    currentLessonIndex === 0 &&
-                    currentModuleIndex === 0
-                  }
-                  className={styles.coursesPage_navigationButton}
-                  onClick={() => {
-                    if (currentStep > 0) {
-                      setCurrentStep(currentStep - 1);
-                    } else {
-                      if (currentSectionIndex > 0) {
-                        const newSection =
-                          sectionOrder[currentSectionIndex - 1];
-                        const images = currentLesson.sections.get(newSection)!;
-                        setSelectedSection(newSection);
-                        setCurrentStep(images.length - 1);
-                      } else if (currentLessonIndex > 0) {
-                        const newLessonId = allLessons[currentLessonIndex - 1];
-                        const newLesson = currentLessonMap.get(newLessonId)!;
-                        const newSection =
-                          sectionOrder[sectionOrder.length - 1];
-                        const images = newLesson.sections.get(newSection)!;
-                        setSelectedLesson(newLessonId);
-                        setSelectedSection(newSection);
-                        setCurrentStep(images.length - 1);
-                      } else if (currentModuleIndex > 0) {
-                        const newModuleId = allModules[currentModuleIndex - 1];
-                        const newLessonMap = groupedLessons.get(newModuleId)!;
-                        const newLessons = Array.from(newLessonMap.keys()).sort(
-                          (a, b) => a - b
-                        );
-                        const newLessonId = newLessons[newLessons.length - 1];
-                        const newLesson = newLessonMap.get(newLessonId)!;
-                        const newSection =
-                          sectionOrder[sectionOrder.length - 1];
-                        const images = newLesson.sections.get(newSection)!;
-                        setSelectedModule(newModuleId);
-                        setSelectedLesson(newLessonId);
-                        setSelectedSection(newSection);
-                        setCurrentStep(images.length - 1);
-                      }
+            <div className={styles.coursesPage_navigationButtons}>
+              <button
+                disabled={
+                  currentStep === 0 &&
+                  currentSectionIndex === 0 &&
+                  currentLessonIndex === 0 &&
+                  currentModuleIndex === 0
+                }
+                className={styles.coursesPage_navigationButton}
+                onClick={() => {
+                  if (currentStep > 0) {
+                    setCurrentStep(currentStep - 1);
+                  } else {
+                    if (currentSectionIndex > 0) {
+                      const newSection = sectionOrder[currentSectionIndex - 1];
+                      const images = currentLesson.sections.get(newSection)!;
+                      setSelectedSection(newSection);
+                      setCurrentStep(images.length - 1);
+                    } else if (currentLessonIndex > 0) {
+                      const newLessonId = allLessons[currentLessonIndex - 1];
+                      const newLesson = currentLessonMap.get(newLessonId)!;
+                      const newSection = sectionOrder[sectionOrder.length - 1];
+                      const images = newLesson.sections.get(newSection)!;
+                      setSelectedLesson(newLessonId);
+                      setSelectedSection(newSection);
+                      setCurrentStep(images.length - 1);
+                    } else if (currentModuleIndex > 0) {
+                      const newModuleId = allModules[currentModuleIndex - 1];
+                      const newLessonMap = groupedLessons.get(newModuleId)!;
+                      const newLessons = Array.from(newLessonMap.keys()).sort(
+                        (a, b) => a - b
+                      );
+                      const newLessonId = newLessons[newLessons.length - 1];
+                      const newLesson = newLessonMap.get(newLessonId)!;
+                      const newSection = sectionOrder[sectionOrder.length - 1];
+                      const images = newLesson.sections.get(newSection)!;
+                      setSelectedModule(newModuleId);
+                      setSelectedLesson(newLessonId);
+                      setSelectedSection(newSection);
+                      setCurrentStep(images.length - 1);
                     }
-                  }}
-                >
-                  <Prev
-                    className={styles.coursesPage_navigationIcon}
-                    style={{
-                      fill:
-                        currentStep === 0 &&
-                        currentSectionIndex === 0 &&
-                        currentLessonIndex === 0 &&
-                        currentModuleIndex === 0
-                          ? 'rgba(77, 77, 77, 0.6)'
-                          : 'rgba(255, 251, 255, 1)'
-                    }}
-                  />
-                </button>
-                <span className={styles.coursesPage_currentStep}>
-                  {selectedSection}/{currentStep + 1}
-                </span>
-                <button
-                  disabled={
-                    currentStep === sectionImages.length - 1 &&
-                    currentSectionIndex === sectionOrder.length - 1 &&
-                    currentLessonIndex === allLessons.length - 1 &&
-                    currentModuleIndex === allModules.length - 1
                   }
-                  className={styles.coursesPage_navigationButton}
-                  onClick={() => {
-                    if (currentStep < sectionImages.length - 1) {
-                      setCurrentStep(currentStep + 1);
-                    } else {
-                      if (currentSectionIndex < sectionOrder.length - 1) {
-                        const newSection =
-                          sectionOrder[currentSectionIndex + 1];
-                        setSelectedSection(newSection);
-                        setCurrentStep(0);
-                      } else if (currentLessonIndex < allLessons.length - 1) {
-                        const newLessonId = allLessons[currentLessonIndex + 1];
-                        setSelectedLesson(newLessonId);
-                        setSelectedSection(sectionOrder[0]);
-                        setCurrentStep(0);
-                      } else if (currentModuleIndex < allModules.length - 1) {
-                        const newModuleId = allModules[currentModuleIndex + 1];
-                        const newLessonMap = groupedLessons.get(newModuleId)!;
-                        const newLessonId = Array.from(
-                          newLessonMap.keys()
-                        ).sort((a, b) => a - b)[0];
-                        setSelectedModule(newModuleId);
-                        setSelectedLesson(newLessonId);
-                        setSelectedSection(sectionOrder[0]);
-                        setCurrentStep(0);
-                      }
-                    }
+                }}
+              >
+                <Prev
+                  className={styles.coursesPage_navigationIcon}
+                  style={{
+                    fill:
+                      currentStep === 0 &&
+                      currentSectionIndex === 0 &&
+                      currentLessonIndex === 0 &&
+                      currentModuleIndex === 0
+                        ? 'rgba(77, 77, 77, 0.6)'
+                        : 'rgba(255, 251, 255, 1)'
                   }}
-                >
-                  <Next
-                    className={styles.coursesPage_navigationIcon}
-                    style={{
-                      fill:
-                        currentStep === sectionImages.length - 1 &&
-                        currentSectionIndex === sectionOrder.length - 1 &&
-                        currentLessonIndex === allLessons.length - 1 &&
-                        currentModuleIndex === allModules.length - 1
-                          ? 'rgba(77, 77, 77, 0.6)'
-                          : 'rgba(255, 251, 255, 1)'
-                    }}
-                  />
-                </button>
-              </div>
+                />
+              </button>
+              <span className={styles.coursesPage_currentStep}>
+                {selectedSection}/{currentStep + 1}
+              </span>
+              <button
+                disabled={
+                  currentStep === sectionImages.length - 1 &&
+                  currentSectionIndex === sectionOrder.length - 1 &&
+                  currentLessonIndex === allLessons.length - 1 &&
+                  currentModuleIndex === allModules.length - 1
+                }
+                className={styles.coursesPage_navigationButton}
+                onClick={() => {
+                  if (currentStep < sectionImages.length - 1) {
+                    setCurrentStep(currentStep + 1);
+                  } else {
+                    if (currentSectionIndex < sectionOrder.length - 1) {
+                      const newSection = sectionOrder[currentSectionIndex + 1];
+                      setSelectedSection(newSection);
+                      setCurrentStep(0);
+                    } else if (currentLessonIndex < allLessons.length - 1) {
+                      const newLessonId = allLessons[currentLessonIndex + 1];
+                      setSelectedLesson(newLessonId);
+                      setSelectedSection(sectionOrder[0]);
+                      setCurrentStep(0);
+                    } else if (currentModuleIndex < allModules.length - 1) {
+                      const newModuleId = allModules[currentModuleIndex + 1];
+                      const newLessonMap = groupedLessons.get(newModuleId)!;
+                      const newLessonId = Array.from(newLessonMap.keys()).sort(
+                        (a, b) => a - b
+                      )[0];
+                      setSelectedModule(newModuleId);
+                      setSelectedLesson(newLessonId);
+                      setSelectedSection(sectionOrder[0]);
+                      setCurrentStep(0);
+                    }
+                  }
+                }}
+              >
+                <Next
+                  className={styles.coursesPage_navigationIcon}
+                  style={{
+                    fill:
+                      currentStep === sectionImages.length - 1 &&
+                      currentSectionIndex === sectionOrder.length - 1 &&
+                      currentLessonIndex === allLessons.length - 1 &&
+                      currentModuleIndex === allModules.length - 1
+                        ? 'rgba(77, 77, 77, 0.6)'
+                        : 'rgba(255, 251, 255, 1)'
+                  }}
+                />
+              </button>
             </div>
           </>
         </div>

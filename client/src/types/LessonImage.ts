@@ -1,4 +1,4 @@
-﻿export interface LessonImage {
+﻿export default interface LessonImage {
   module: number;
   lesson: number;
   lessonName: string;
