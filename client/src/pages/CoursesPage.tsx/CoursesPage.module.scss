@@ -17,11 +17,16 @@
     font-weight: 500;
     padding: rem(30) 0 rem(15) rem(30);
   }
-  &_chapterBlock {
+  &_lessonBlock {
     padding: rem(30) 0 rem(30) rem(30);
     border-bottom: 2px solid $gray-300;
   }
   &_module {
+    display: flex;
+    gap: 10px;
+    padding: 0 rem(30) rem(30);
+  }
+  h2 {
     font-family: 'Neutral Face';
     background-color: transparent;
     width: fit-content;
@@ -29,7 +34,7 @@
     color: $black;
     font-size: rem(20);
     font-weight: 700;
-    padding: 0 rem(30) rem(30);
+    margin: 0;
     cursor: default;
     &:hover {
       background-color: transparent;
@@ -49,7 +54,7 @@
     margin: 0;
     padding: rem(30) 0 rem(30) rem(30);
   }
-  &_chapter {
+  &_lesson {
     font-family: 'SF Pro Display';
     background-color: transparent;
     width: fit-content;
@@ -58,7 +63,8 @@
     margin-bottom: rem(8);
     font-size: rem(24);
     font-weight: 600;
-    padding: 0;
+    padding: 0 rem(30) 0 0;
+    text-align: start;
     &:hover {
       background-color: transparent;
     }
@@ -87,12 +93,20 @@
     padding: rem(10) rem(24);
     margin: rem(110) 0 rem(60) 0;
   }
+  &_moduleButtons {
+    display: flex;
+    gap: 10px;
+    background-color: transparent;
+  }
   &_navigationButton {
     background-color: transparent;
     width: rem(19);
     height: rem(19);
     padding: 0;
     &:disabled {
+      background-color: transparent;
+    }
+    &:hover {
       background-color: transparent;
     }
   }

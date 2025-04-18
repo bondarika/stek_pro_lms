@@ -1,4 +1,5 @@
-﻿export interface CourseButtonProps {
+﻿import { PropsWithChildren } from 'react';
+
+export interface CourseButtonProps extends PropsWithChildren {
   navigation: string;
-  name: string;
 }
