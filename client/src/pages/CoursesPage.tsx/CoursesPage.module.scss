@@ -74,6 +74,10 @@
     flex-direction: column;
     gap: rem(8);
     &_block {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
       width: rem(285);
       height: rem(38);
       font-family: 'Neutral Face';

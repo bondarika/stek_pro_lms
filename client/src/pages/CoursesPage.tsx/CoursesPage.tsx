@@ -170,25 +170,44 @@ const CoursesPage = observer(() => {
                                   sectionOrder.indexOf(a) -
                                   sectionOrder.indexOf(b)
                               )
-                              .map((sec) => (
-                                <div key={sec}>
-                                  <button
-                                    style={{
-                                      backgroundColor:
-                                        selectedLesson === lesson &&
-                                        selectedSection === sec
+                              .map((sec) => {
+                                const isCurrent =
+                                  selectedLesson === lesson &&
+                                  selectedSection === sec;
+
+                                const totalSteps =
+                                  lessonData.sections.get(sec)?.length ?? 0;
+
+                                return (
+                                  <div key={sec}>
+                                    <button
+                                      style={{
+                                        backgroundColor: isCurrent
                                           ? 'rgba(100, 110, 120, 1)'
                                           : ' rgba(100, 110, 120, 0.6)'
-                                    }}
-                                    className={styles.coursesPage_section_block}
-                                    onClick={() =>
-                                      goToSlide(selectedModule, lesson, sec, 0)
-                                    }
-                                  >
-                                    {sec}
-                                  </button>
-                                </div>
-                              ))}
+                                      }}
+                                      className={
+                                        styles.coursesPage_section_block
+                                      }
+                                      onClick={() =>
+                                        goToSlide(
+                                          selectedModule,
+                                          lesson,
+                                          sec,
+                                          0
+                                        )
+                                      }
+                                    >
+                                      {sec}
+                                      {isCurrent && (
+                                        <p>
+                                          {currentStep + 1}/{totalSteps}
+                                        </p>
+                                      )}
+                                    </button>
+                                  </div>
+                                );
+                              })}
                           </div>
                         </div>
                       )
