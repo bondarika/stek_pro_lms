@@ -74,7 +74,6 @@ export default class Store {
       console.log(response);
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
-      console.log(this.isAuth);
       this.setUser(response.data.user);
       await this.fetchCourses();
       this.clearError();

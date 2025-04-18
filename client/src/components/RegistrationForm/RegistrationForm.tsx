@@ -4,14 +4,16 @@ import Button from '../Button/Button';
 import styles from './RegistrationForm.module.scss';
 import { Context } from '../../main';
 import info from '@/assets/icons/info-gray.svg';
+import info_pink from '@/assets/icons/info-pink.svg';
 
 const RegistrationForm: FC = observer(() => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  // const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [surname, setSurname] = useState<string>('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
+  const [passwordError, setPasswordError] = useState<string>(''); // State for password error
 
   const { store } = useContext(Context);
   const [code, setCodeInput] = useState<string>('');
@@ -21,11 +23,17 @@ const RegistrationForm: FC = observer(() => {
       name.trim() !== '' &&
       surname.trim() !== '' &&
       email.trim() !== '' &&
-      password.trim() !== '';
-    setIsSubmitDisabled(!allFieldsFilled);
-    // setIsSubmitDisabled(!(allFieldsFilled && passwordsMatch));
-    // }, [name, surname, email, password, confirmPassword]);
-  }, [name, surname, email, password]);
+      password.trim() !== '' &&
+      confirmPassword.trim() !== '';
+    const passwordsMatch = password === confirmPassword;
+    if (!passwordsMatch && confirmPassword.trim() !== '') {
+      setPasswordError('Пароли не совпадают');
+    } else {
+      setPasswordError('');
+    }
+
+    setIsSubmitDisabled(!(allFieldsFilled && passwordsMatch));
+  }, [name, surname, email, password, confirmPassword]);
 
   const handleCodeSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,6 +42,7 @@ const RegistrationForm: FC = observer(() => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    store.clearError();
     store.registration(name, surname, email, password);
   };
 
@@ -46,6 +55,12 @@ const RegistrationForm: FC = observer(() => {
               <img src={info} />
               <p>регистрация доступна только при наличии специального кода</p>
             </div>
+          )}
+          {passwordError && (
+            <p className={styles.error}>
+              <img src={info} />
+              {passwordError}
+            </p>
           )}
           <form onSubmit={handleCodeSubmit}>
             <input
@@ -85,48 +100,56 @@ const RegistrationForm: FC = observer(() => {
           >
             активировать позже
           </Button>
-          {/* спросить куда эта кнопка должна перенаправлять */}
         </div>
       );
     case 3:
       return (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="фамилия"
-            value={surname}
-            onChange={(e) => setSurname(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="имя"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            id="userEmail"
-            type="email"
-            placeholder="электронная почта"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            id="userPassword"
-            type="password"
-            placeholder="пароль"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {/* <input
-            type="password"
-            placeholder="повторите пароль"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          /> */}
-          <Button type="submit" disabled={isSubmitDisabled}>
-            зарегистрироваться
-          </Button>
-        </form>
+        <>
+          {passwordError && (
+            <p className={styles.error}>
+              <img src={info_pink} />
+              {passwordError}
+            </p>
+          )}
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="фамилия"
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
+            />
+            <input
+              type="text"
+              placeholder="имя"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              id="userEmail"
+              type="email"
+              placeholder="электронная почта"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+              id="userPassword"
+              type="password"
+              placeholder="пароль"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="повторите пароль"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+
+            <Button type="submit" disabled={isSubmitDisabled}>
+              зарегистрироваться
+            </Button>
+          </form>
+        </>
       );
   }
 });

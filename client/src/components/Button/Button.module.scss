@@ -4,7 +4,7 @@
 button {
   font-family: 'Coolvetica';
   border: none;
-  border-radius: 12px;
+  border-radius: rem(12);
   background-color: $pink-200;
   color: $white;
   font-size: rem(20);

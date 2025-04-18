@@ -38,3 +38,19 @@
     color: $pink-200;
   }
 }
+
+.error {
+  width: rem(334);
+  display: flex;
+  align-items: center;
+  font-family: 'Coolvetica';
+  color: $pink-200;
+  font-size: rem(20);
+  margin-bottom: rem(20);
+
+  img {
+    width: rem(38);
+    height: rem(37);
+    margin-right: rem(8);
+  }
+}
