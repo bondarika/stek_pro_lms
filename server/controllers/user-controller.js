@@ -95,11 +95,43 @@ class UserController {
     }
   }
 
+
+async getCourses(req, res, next) {
+  try {
+    const userId = req.user.id;
+    const courses = await userService.getUserCourses(userId);
+    return res.json(courses);
+  } catch (e) {
+    next(e);
+  }
+}
+  
 //сейчас
-  async getCourses(req, res, next) {
+  async getCurrentProgress(req, res, next) {
+  try {
+    const userId = req.user.id;
+    const courseId = parseInt(req.params.courseId, 10);
+
+    const progress = await userService.getCurrentUserProgress(userId, courseId);
+    return res.json(progress);
+  } catch (e) {
+    next(e);
+  }
+}
+
+async trackCurrentProgress(req, res, next) {
     try {
-      const courses = await userService.getUserCourses();
-      return res.json(courses);
+      const userId = req.user.id;
+      const { courseId, module, lesson, section, step } = req.body;
+      const result = await userService.trackCurrentUserProgress(
+        userId,
+        courseId,
+        module,
+        lesson,
+        section,
+        step
+      );
+      return res.json(result);
     } catch (e) {
       next(e);
     }

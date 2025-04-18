@@ -11,4 +11,20 @@ export default class UserService {
   static fetchUserCourses(): Promise<AxiosResponse<Course[]>> {
     return api.get<Course[]>('/user/courses');
   }
+
+  static async trackProgress({
+    courseId,
+    module,
+    lesson,
+    section,
+    step
+  }): Promise<void> {
+    return api.post('/user/progress', {
+      courseId,
+      module,
+      lesson,
+      section,
+      step
+    });
+  }
 }

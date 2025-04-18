@@ -35,26 +35,14 @@ router.post('/login', userController.login);
 router.post('/logout', userController.logout);
 router.get('/refresh', userController.refresh);
 router.get('/users', authMiddleware, userController.getUsers);
-//сейчас
 router.get('/user/courses', authMiddleware, userController.getCourses);
-// router.get('/users/:id', userController.getUser);
-/*
-router.get("/users/:id");
-router.put("/users/:id");
-router.delete("/users/:id");
 
-router.post("/codes");
-router.get("/codes");
-router.get("/codes/:id");
-router.get("/codes/check/:code");
-router.post(" /codes/use");
-router.delete("/codes/:id");
+// Для отслеживания прогресса get
+router.get('/user/progress/:courseId', authMiddleware, userController.getCurrentProgress);
+// Для отслеживания прогресса post
+router.post('/user/progress', authMiddleware, userController.trackCurrentProgress);
 
-router.post(" /users/:userId/codes/:codeId");
-router.get(" /users/:userId/codes");
-router.delete(" /users/:userId/codes/:codeId");
+// Для отслеживания текущего шага 
+// ?????????????????????????????????
 
-router.get("/tokens");
-router.get("/tokens/:id");
-*/
 module.exports = router;

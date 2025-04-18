@@ -1,5 +1,5 @@
 ﻿import { observer } from 'mobx-react-lite';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import Button from '../Button/Button';
 import styles from './RegistrationForm.module.scss';
 import { Context } from '../../main';
@@ -8,11 +8,24 @@ import info from '@/assets/icons/info-gray.svg';
 const RegistrationForm: FC = observer(() => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  // const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [surname, setSurname] = useState<string>('');
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
 
   const { store } = useContext(Context);
   const [code, setCodeInput] = useState<string>('');
+
+  useEffect(() => {
+    const allFieldsFilled =
+      name.trim() !== '' &&
+      surname.trim() !== '' &&
+      email.trim() !== '' &&
+      password.trim() !== '';
+    setIsSubmitDisabled(!allFieldsFilled);
+    // setIsSubmitDisabled(!(allFieldsFilled && passwordsMatch));
+    // }, [name, surname, email, password, confirmPassword]);
+  }, [name, surname, email, password]);
 
   const handleCodeSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -91,24 +104,28 @@ const RegistrationForm: FC = observer(() => {
             onChange={(e) => setName(e.target.value)}
           />
           <input
+            id="userEmail"
             type="email"
             placeholder="электронная почта"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
+            id="userPassword"
             type="password"
             placeholder="пароль"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <input
+          {/* <input
             type="password"
             placeholder="повторите пароль"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button type="submit">зарегистрироваться</Button>
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          /> */}
+          <Button type="submit" disabled={isSubmitDisabled}>
+            зарегистрироваться
+          </Button>
         </form>
       );
   }

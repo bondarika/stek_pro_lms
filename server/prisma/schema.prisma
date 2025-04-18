@@ -12,51 +12,43 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model Token {
   id           Int    @id @default(autoincrement())
   userId       Int    @unique
   user         User   @relation(fields: [userId], references: [id])
   refreshToken String @unique
 }
+
 model User {
-  id             Int         @id @default(autoincrement())
-  name           String
-  surname        String
-  email          String      @unique
-  password       String
-  codeId         Int
-  isActivated    Boolean     @default(false)
-  activationLink String?     @unique
-  codes          UserCodes[]
-  token          Token?
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  surname            String
+  email              String               @unique
+  password           String
+  codeId             Int
+  isActivated        Boolean              @default(false)
+  activationLink     String?              @unique
+  codes              UserCodes[]
+  token              Token?
+  UserCourseProgress UserCourseProgress[]
 }
 
 model Code {
-  id         Int          @id @default(autoincrement())
-  code       String       @unique
+  id         Int         @id @default(autoincrement())
+  code       String      @unique
   type       String
   usageLimit Int?
-  usedCount  Int          @default(0)
+  usedCount  Int         @default(0)
   users      UserCodes[]
-  codes      Course[]     @relation("CourseCodes")
-  CourseCode CourseCode[]
+  codes      Course[]
 }
 
 model Course {
-  id         Int          @id @default(autoincrement())
-  name       String
-  codes      Code[]       @relation("CourseCodes")
-  CourseCode CourseCode[]
-}
-
-model CourseCode {
-  courseId Int
-  codeId   Int
-
-  course Course @relation(fields: [courseId], references: [id])
-  code   Code   @relation(fields: [codeId], references: [id])
-
-  @@id([courseId, codeId])
+  id    Int    @id @default(autoincrement())
+  name  String
+  type  String?
+  codes Code[]
 }
 
 model UserCodes {
@@ -66,4 +58,19 @@ model UserCodes {
   code   Code @relation(fields: [codeId], references: [id])
 
   @@id([userId, codeId])
+}
+
+model UserCourseProgress {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  courseId  Int
+  module    Int
+  lesson    Int
+  section   String
+  step      Int
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, courseId]) // Один прогресс на одного юзера и курс
 }

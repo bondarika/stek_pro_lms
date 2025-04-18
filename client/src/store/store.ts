@@ -171,4 +171,32 @@ export default class Store {
       this.step--;
     }
   };
+
+  trackCurrentUserProgress = async ({
+    courseId,
+    module,
+    lesson,
+    section,
+    step
+  }) => {
+    await api.post('/user/progress', {
+      courseId,
+      module,
+      lesson,
+      section,
+      step
+    });
+  };
+
+  async trackUserProgress(courseId, module, lesson, section, step) {
+    try {
+      const response = await UserService.trackProgress();
+      this.setCourses(response.data);
+      this.clearError();
+    } catch (e) {
+      this.setError(
+        e.response?.data?.message || 'произошла ошибка при загрузке курсов'
+      );
+    }
+  }
 }
