@@ -6,6 +6,7 @@ import { AuthResponse } from '../types/response/AuthResponse';
 import axios from 'axios';
 import Course from '../types/Course';
 import UserService from '../services/UserService';
+import { AxiosError } from 'axios';
 
 export default class Store {
   user = {} as User;
@@ -62,7 +63,8 @@ export default class Store {
         this.clearError();
       }
     } catch (e) {
-      this.setError(e.response?.data?.message || 'ошибка валидации кода');
+      const error = e as AxiosError<{ message: string }>;
+      this.setError(error.response?.data?.message || 'ошибка валидации кода');
     }
   }
 
@@ -77,8 +79,9 @@ export default class Store {
       await this.fetchCourses();
       this.clearError();
     } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
       this.setError(
-        e.response?.data?.message || 'произошла ошибка при попытке войти'
+        error.response?.data?.message || 'произошла ошибка при попытке войти'
       );
     }
   }
@@ -103,8 +106,9 @@ export default class Store {
       await this.fetchCourses();
       this.clearError();
     } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
       this.setError(
-        e.response?.data?.message ||
+        error.response?.data?.message ||
           'произошла ошибка при попытке зарегистрироваться '
       );
     }
@@ -119,8 +123,9 @@ export default class Store {
       this.setUser({} as User);
       this.clearError();
     } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
       this.setError(
-        e.response?.data?.message || 'произошла ошибка при попытке выйти'
+        error.response?.data?.message || 'произошла ошибка при попытке выйти'
       );
     }
   }
@@ -137,8 +142,9 @@ export default class Store {
       await this.fetchCourses();
       this.clearError();
     } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
       this.setError(
-        e.response?.data?.message ||
+        error.response?.data?.message ||
           'произошла ошибка при проверке авторизации пользователя'
       );
     } finally {
@@ -152,8 +158,9 @@ export default class Store {
       this.setCourses(response.data);
       this.clearError();
     } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
       this.setError(
-        e.response?.data?.message || 'произошла ошибка при загрузке курсов'
+        error.response?.data?.message || 'произошла ошибка при загрузке курсов'
       );
     }
   }
@@ -172,31 +179,31 @@ export default class Store {
     }
   };
 
-  trackCurrentUserProgress = async ({
-    courseId,
-    module,
-    lesson,
-    section,
-    step
-  }) => {
-    await api.post('/user/progress', {
-      courseId,
-      module,
-      lesson,
-      section,
-      step
-    });
-  };
+  // trackCurrentUserProgress = async ({
+  //   courseId,
+  //   module,
+  //   lesson,
+  //   section,
+  //   step
+  // }) => {
+  //   await api.post('/user/progress', {
+  //     courseId,
+  //     module,
+  //     lesson,
+  //     section,
+  //     step
+  //   });
+  // };
 
-  async trackUserProgress(courseId, module, lesson, section, step) {
-    try {
-      const response = await UserService.trackProgress();
-      this.setCourses(response.data);
-      this.clearError();
-    } catch (e) {
-      this.setError(
-        e.response?.data?.message || 'произошла ошибка при загрузке курсов'
-      );
-    }
-  }
+  // async trackUserProgress(courseId, module, lesson, section, step) {
+  //   try {
+  //     const response = await UserService.trackProgress();
+  //     this.setCourses(response.data);
+  //     this.clearError();
+  //   } catch (e) {
+  //     this.setError(
+  //       e.response?.data?.message || 'произошла ошибка при загрузке курсов'
+  //     );
+  //   }
+  // }
 }

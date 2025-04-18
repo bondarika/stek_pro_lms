@@ -1,4 +1,4 @@
-﻿import { LessonImage } from '../types/LessonImage';
+﻿import  LessonImage  from '../types/LessonImage';
 
 const images: Record<string, { default: string }> = import.meta.glob(
   '@/assets/modules/course_main/module-*/**/*/*.webp',

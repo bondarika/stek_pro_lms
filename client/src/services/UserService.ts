@@ -12,19 +12,19 @@ export default class UserService {
     return api.get<Course[]>('/user/courses');
   }
 
-  static async trackProgress({
-    courseId,
-    module,
-    lesson,
-    section,
-    step
-  }): Promise<void> {
-    return api.post('/user/progress', {
-      courseId,
-      module,
-      lesson,
-      section,
-      step
-    });
-  }
+  // static async trackProgress({
+  //   courseId,
+  //   module,
+  //   lesson,
+  //   section,
+  //   step
+  // }): Promise<void> {
+  //   return api.post('/user/progress', {
+  //     courseId,
+  //     module,
+  //     lesson,
+  //     section,
+  //     step
+  //   });
+  // }
 }
