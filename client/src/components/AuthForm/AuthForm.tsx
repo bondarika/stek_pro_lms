@@ -50,12 +50,14 @@ const AuthForm: FC = function AuthForm() {
         {activeTab === 'login' ? (
           <form onSubmit={handleLogin}>
             <input
+              id="userEmail"
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               placeholder="электронная почта"
               value={email}
             />
             <input
+              id="userPassword"
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               placeholder="пароль"
