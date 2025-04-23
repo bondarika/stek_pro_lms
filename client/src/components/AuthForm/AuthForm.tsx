@@ -86,6 +86,7 @@ const AuthForm: FC = function AuthForm() {
                 type="password"
                 placeholder="пароль"
                 value={password}
+                required
               />
               {/* <label htmlFor="userPassword">&nbsp;пароль&nbsp;</label> */}
             </div>

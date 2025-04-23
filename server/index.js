@@ -9,10 +9,17 @@ const errorMiddleware = require('./middleware/error-middleware');
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+// const corsOptions = {
+//   origin: 'http://localhost:5173', 
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'verification'],
+//   credentials: true,
+// };
+
 const corsOptions = {
-  origin: 'http://lms.stekpro.ru', 
+  origin: 'https://lms.stekpro.ru', 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'verification'],
   credentials: true,
 };
 
@@ -20,10 +27,6 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: process.env.CLIENT_URL, 
-  credentials: true
-}));
 app.use('/api', router);
 app.use(errorMiddleware);
 

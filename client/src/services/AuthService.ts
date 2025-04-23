@@ -24,7 +24,6 @@ export default class AuthService {
     password: string
   ): Promise<AxiosResponse<AuthResponse>> {
     const codeToken = localStorage.getItem('codeToken');
-    console.log(`Привет это ${codeToken}`);
     return api.post<AuthResponse>(
       '/registration',
       { name, surname, email, password },
