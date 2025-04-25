@@ -55,7 +55,8 @@ class UserController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true
       });
-      return res.json(userData);
+      // return res.json(userData);
+      return (res.json(userData), res.redirect(`${process.env.CLIENT_URL}/courses`));
     } catch (e) {
       next(e);
     }

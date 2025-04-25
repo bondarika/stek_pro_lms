@@ -14,7 +14,10 @@ type AuthTab = 'login' | 'registration';
 const AuthForm: FC = function AuthForm() {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await store.login(email, password);
+    const success = await store.login(email, password);
+    if (success) {
+      window.location.href = '/courses'; 
+    }
   };
 
   const handleTabChange = (tab: AuthTab) => {

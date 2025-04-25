@@ -77,6 +77,7 @@ export default class Store {
       this.setUser(response.data.user);
       await this.fetchCourses();
       this.clearError();
+      return true;
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       this.setError(
@@ -104,6 +105,7 @@ export default class Store {
       this.setUser(response.data.user);
       await this.fetchCourses();
       this.clearError();
+      return true;
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
       this.setError(

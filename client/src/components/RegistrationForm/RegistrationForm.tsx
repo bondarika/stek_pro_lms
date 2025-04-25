@@ -40,10 +40,13 @@ const RegistrationForm: FC = observer(() => {
     store.validation(code);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     store.clearError();
-    store.registration(name, surname, email, password);
+    const success = await store.registration(name, surname, email, password);
+    if (success) {
+      window.location.href = '/courses';
+    }
   };
 
   switch (store.step) {
