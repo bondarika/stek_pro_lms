@@ -41,3 +41,46 @@ p {
 body {
   height: 100%;
 }
+
+.svg_ellipse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(350px);
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+.svg_ellipse_1 {
+  animation: ellipseOrbit 8s linear infinite;
+  transform-origin: 300px 0;
+  top: 0;
+  left: -300px;
+}
+
+.svg_ellipse_2 {
+  animation: ellipseOrbit 8s linear infinite;
+  animation-delay: 3s;
+  transform-origin: 300px 0;
+  top: 0;
+  left: -300px;
+}
+
+@keyframes ellipseOrbit {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.rotation-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+}

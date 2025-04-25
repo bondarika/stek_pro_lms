@@ -16,7 +16,7 @@ const AuthForm: FC = function AuthForm() {
     event.preventDefault();
     const success = await store.login(email, password);
     if (success) {
-      window.location.href = '/courses'; 
+      window.location.href = '/courses';
     }
   };
 
@@ -32,6 +32,35 @@ const AuthForm: FC = function AuthForm() {
 
   return (
     <div className={styles.container}>
+      <div className="rotation-center">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="958"
+          height="1000"
+          viewBox="0 0 1058 1100"
+          fill="rgba(28, 189, 175, 1)"
+          className="svg_ellipse svg_ellipse_1"
+        >
+          <path
+            d="M694.671 1093.03C357.14 1151.19 307.094 791.641 76.8124 470.583C-153.469 149.526 195.144 117.527 387.464 40.1577C559.457 -29.0348 702.192 -4.09551 859.035 94.746C1193.3 305.398 1084.04 1025.95 694.671 1093.03Z"
+            fill="#1CBDAF"
+          />
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1201"
+          height="938"
+          viewBox="0 0 1301 1038"
+          fill="rgba(28, 189, 175, 1)"
+          className="svg_ellipse svg_ellipse_2"
+        >
+          <path
+            d="M1300.61 724.523C1300.61 1119.63 1110.5 1028.32 715.4 1028.32C320.295 1028.32 0 708.027 0 312.923C0 -82.1819 190.103 9.12256 585.208 9.12256C980.312 9.12256 1300.61 329.418 1300.61 724.523Z"
+            fill="#1CBDAF"
+          />
+        </svg>
+      </div>
+
       <div className={styles.authform_links}>
         <div className={styles.authform_links_stekPro}>
           <img src={stek_pro} className={styles.authform_links_stekPro_text} />

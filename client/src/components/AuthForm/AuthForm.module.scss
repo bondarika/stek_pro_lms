@@ -7,14 +7,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('../../assets/images/background.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #000000;
+  position: relative;
+  z-index: 10;
   flex-direction: column;
 }
 
 .authform {
+  z-index: 10;
   width: fit-content;
   border-radius: rem(20);
   padding: rem(32) rem(32) rem(20) rem(32);
@@ -25,6 +25,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    z-index: 10;
 
     &_stekPro {
       background-color: $white-opacity-70;
@@ -56,6 +57,7 @@
     flex-direction: row;
     justify-content: space-between;
     width: rem(476);
+    z-index: 10;
   }
 
   &_line {
