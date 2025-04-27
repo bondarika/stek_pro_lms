@@ -24,6 +24,12 @@ class TokenService {
     };
   }
 
+  generateResetToken(payload) {
+    return jwt.sign(payload, process.env.JWT_ACCESS_SECRET, {
+      expiresIn: '60m'
+    });
+  }
+
   validateCodeToken(token) {
     try {
       const codeData = jwt.verify(token, process.env.JWT_CODE_SECRET);

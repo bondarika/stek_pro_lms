@@ -55,8 +55,6 @@ export default class Store {
   async validation(code: string) {
     try {
       const response = await AuthService.validation(code);
-      console.log(response);
-      console.log(response.status);
       if (response.status === 200) {
         localStorage.setItem('codeToken', response.data.codeToken);
         this.step++;
@@ -99,7 +97,6 @@ export default class Store {
         email,
         password
       );
-      console.log(response);
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
@@ -112,6 +109,34 @@ export default class Store {
         error.response?.data?.message ||
           'произошла ошибка при попытке зарегистрироваться '
       );
+    }
+  }
+
+  async sendResetEmail(email: string) {
+    try {
+      const response = await AuthService.sendResetEmail(email);
+      console.log(response);
+      return true;
+    } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
+      this.setError(
+        error.response?.data?.message || 'произошла ошибка при отправке письма'
+      );
+      return false;
+    }
+  }
+
+  async resetPassword(resetLink: string, email: string, newPassword: string) {
+    try {
+      const response = await AuthService.resetPassword(resetLink, email, newPassword);
+      console.log(response);
+      return true;
+    } catch (e) {
+      const error = e as AxiosError<{ message: string }>;
+      this.setError(
+        error.response?.data?.message || 'произошла ошибка при смене пароля'
+      );
+      return false;
     }
   }
 

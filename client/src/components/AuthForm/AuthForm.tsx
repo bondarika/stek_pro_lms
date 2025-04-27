@@ -5,11 +5,12 @@ import RegistrationForm from '../RegistrationForm/RegistrationForm';
 import styles from './AuthForm.module.scss';
 import { FC, useContext, useState } from 'react';
 import info from '@/assets/icons/info-pink.svg';
+import info_gray from '@/assets/icons/info-gray.svg';
 import stek_pro from '@/assets/icons/stek_pro.svg';
 import lms from '@/assets/icons/lms.svg';
 import '@/styles/variables.scss';
 
-type AuthTab = 'login' | 'registration';
+type AuthTab = 'login' | 'registration' | 'forgotPassword';
 
 const AuthForm: FC = function AuthForm() {
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -17,6 +18,27 @@ const AuthForm: FC = function AuthForm() {
     const success = await store.login(email, password);
     if (success) {
       window.location.href = '/courses';
+    }
+  };
+  const handlePasswordReset = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
+    try {
+      const success = await store.sendResetEmail(email);
+      if (success) {
+        setResetMessage(
+          <p>
+            <p>проверьте почту,</p>
+            <p>отправили вам волшебную ссылку</p>
+          </p>
+        );
+      } else {
+        setResetMessage('произошла ошибка при отправке письма');
+      }
+    } catch (error) {
+      setResetMessage('произошла ошибка при отправке письма');
+      console.error(error);
     }
   };
 
@@ -28,6 +50,9 @@ const AuthForm: FC = function AuthForm() {
   const [activeTab, setActiveTab] = useState<AuthTab>('login');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [resetMessage, setResetMessage] = useState<string | React.ReactNode>(
+    ''
+  );
   const { store } = useContext(Context);
 
   return (
@@ -77,20 +102,33 @@ const AuthForm: FC = function AuthForm() {
       </div>
 
       <div className={styles.authform}>
-        <div className={styles.authform_tabs}>
-          <h1
-            className={activeTab === 'login' ? styles.active : ''}
-            onClick={() => handleTabChange('login')}
-          >
-            ВХОД
-          </h1>
-          <h1
-            className={activeTab === 'registration' ? styles.active : ''}
-            onClick={() => handleTabChange('registration')}
-          >
-            РЕГИСТРАЦИЯ
-          </h1>
-        </div>
+        {activeTab !== 'forgotPassword' ? (
+          <div className={styles.authform_tabs}>
+            <h1
+              className={activeTab === 'login' ? styles.active : ''}
+              onClick={() => handleTabChange('login')}
+            >
+              ВХОД
+            </h1>
+            <h1
+              className={activeTab === 'registration' ? styles.active : ''}
+              onClick={() => handleTabChange('registration')}
+            >
+              РЕГИСТРАЦИЯ
+            </h1>
+          </div>
+        ) : (
+          <div className={styles.authform_tabs}>
+            <h1 onClick={() => handleTabChange('login')}>ВХОД</h1>
+            <h1
+              onClick={() => handleTabChange('registration')}
+              className={styles.active}
+            >
+              ЗАБЫЛИ ПАРОЛЬ
+            </h1>
+          </div>
+        )}
+
         {store.error && (
           <div className={styles.authform_error}>
             <img src={info} />
@@ -105,28 +143,64 @@ const AuthForm: FC = function AuthForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 // placeholder=" "
-                placeholder="электро почта"
+                placeholder="электронная почта"
                 value={email}
                 required
               />
-              {/* <label htmlFor="userEmail">&nbsp;электро почта&nbsp;</label> */}
+              {/* <label htmlFor="userEmail">&nbsp;электронная почта&nbsp;</label> */}
             </div>
             <div className={styles.authform_input}>
               <input
                 id="userPassword"
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
+                // placeholder=" "
                 placeholder="пароль"
                 value={password}
                 required
               />
               {/* <label htmlFor="userPassword">&nbsp;пароль&nbsp;</label> */}
             </div>
-
             <Button type="submit">войти</Button>
+            <button
+              className={styles.authform_forgotPassword}
+              onClick={() => handleTabChange('forgotPassword')}
+            >
+              забыли пароль?
+            </button>
           </form>
-        ) : (
+        ) : activeTab === 'registration' ? (
           <RegistrationForm />
+        ) : (
+          <form onSubmit={handlePasswordReset}>
+            {resetMessage ? (
+              <div className={styles.authform_resetMessage}>
+                <img src={info_gray} />
+                {resetMessage}
+              </div>
+            ) : (
+              <>
+                <div className={styles.authform_input}>
+                  <div className={styles.authform_message}>
+                    <img src={info_gray} />
+                    пришлём вам ссылку <br></br>для сброса пароля
+                  </div>
+                  <input
+                    id="userEmail"
+                    onChange={(e) => setEmail(e.target.value)}
+                    type="email"
+                    placeholder="электронная почта"
+                    value={email}
+                    required
+                  />
+                  {/* <label htmlFor="userPassword">&nbsp;электропочта&nbsp;</label> */}
+                </div>
+                <Button type="submit" className={styles.authform_reset}>
+                  сбросить пароль
+                </Button>
+              </>
+            )}
+          </form>
         )}
       </div>
     </div>

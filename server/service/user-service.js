@@ -10,9 +10,7 @@ class UserService {
   async registration(name, surname, email, password, codeId) {
     const candidate = await prisma.user.findUnique({ where: { email } });
     if (candidate) {
-      throw ApiError.BadRequest(
-        `пользователь уже существует`
-      );
+      throw ApiError.BadRequest(`пользователь уже существует`);
     }
     const hashPassword = await bcrypt.hash(password, 5);
     const activationLink = uuid.v4();
@@ -78,6 +76,49 @@ class UserService {
     return token;
   }
 
+  //ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
+  async forgotPassword(email) {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      throw ApiError.BadRequest(
+        `пользователя с такой электронной почтой не существует`
+      );
+    }
+    const userDto = new UserDto(user);
+    const resetToken = tokenService.generateResetToken({ ...userDto });
+    const expiresAt = new Date(Date.now() + 1000 * 60 * 60);
+    await prisma.passwordResetToken.create({
+      data: {
+        resetToken,
+        userId: user.id,
+        expiresAt
+      }
+    });
+    const resetLink = uuid.v4();
+    await mailService.sendResetMail(
+      email,
+      `${process.env.CLIENT_URL}/reset-password/${resetLink}`
+    );
+    return(true);
+  }
+  //ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
+  async resetPassword(resetToken, newPassword) {
+    const resetRecord = await prisma.passwordResetToken.findUnique({
+      where: { resetToken },
+      include: { user: true }
+    });
+    if (!resetRecord || resetRecord.expiresAt < new Date()) {
+      throw ApiError.BadRequest('истёк срок действия ссылки');
+    }
+    const hashPassword = await bcrypt.hash(newPassword, 5);
+    await prisma.user.update({
+      where: { id: resetRecord.userId },
+      data: { password: hashPassword }
+    });
+    await prisma.passwordResetToken.delete({ where: { resetToken } });
+  }
+  //ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
+
   async refresh(refreshToken) {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError();
@@ -99,92 +140,93 @@ class UserService {
     return users;
   }
 
-async getUserCourses(userId) {
-  const userCodes = await prisma.userCodes.findMany({
-    where: { userId },
-    include: {
-      code: true
+  async getUserCourses(userId) {
+    const userCodes = await prisma.userCodes.findMany({
+      where: { userId },
+      include: {
+        code: true
+      }
+    });
+
+    const isAdmin = userCodes.some(
+      (userCode) => userCode.code.type === 'admin'
+    );
+
+    if (isAdmin) {
+      const courses = await prisma.course.findMany();
+      return courses;
     }
-  });
 
-  const isAdmin = userCodes.some((userCode) => userCode.code.type === 'admin');
+    const codeTypes = userCodes.map((userCode) => userCode.code.type);
 
-  if (isAdmin) {
-    const courses = await prisma.course.findMany();
+    const courses = await prisma.course.findMany({
+      where: {
+        type: { in: codeTypes }
+      }
+    });
+
     return courses;
   }
 
-  const codeTypes = userCodes.map((userCode) => userCode.code.type);
-
-  const courses = await prisma.course.findMany({
-    where: {
-      type: { in: codeTypes }
-    }
-  });
-
-  return courses;
-}
-
-//сейчас
-async getCurrentUserProgress(userId, courseId) {
-  const progress = await prisma.userCourseProgress.findUnique({
-    where: {
-      userId_courseId: {
-        userId,
-        courseId
+  //сейчас
+  async getCurrentUserProgress(userId, courseId) {
+    const progress = await prisma.userCourseProgress.findUnique({
+      where: {
+        userId_courseId: {
+          userId,
+          courseId
+        }
       }
-    }
-  });
+    });
 
-  if (!progress) {
-    // начальное состояние — первые шаги
-    return {
-      userId,
-      courseId,
-      module: 1,
-      lesson: 1,
-      section: 'теория',
-      step: 1,
-      updatedAt: null
-    };
+    if (!progress) {
+      // начальное состояние — первые шаги
+      return {
+        userId,
+        courseId,
+        module: 1,
+        lesson: 1,
+        section: 'теория',
+        step: 1,
+        updatedAt: null
+      };
+    }
+
+    return progress;
   }
 
-  return progress;
-}
-
-
-async trackCurrentUserProgress(        
+  async trackCurrentUserProgress(
+    userId,
+    courseId,
+    module,
+    lesson,
+    section,
+    step
+  ) {
+    const result = await prisma.userCourseProgress.upsert({
+      where: {
+        userId_courseId: {
+          userId,
+          courseId
+        }
+      },
+      update: {
+        module,
+        lesson,
+        section,
+        step
+      },
+      create: {
         userId,
         courseId,
         module,
         lesson,
         section,
-        step) 
-        {
-        const result = await prisma.userCourseProgress.upsert({
-        where: {
-          userId_courseId: {
-            userId,
-            courseId
-          }
-        },
-        update: {
-          module,
-          lesson,
-          section,
-          step
-        },
-        create: {
-          userId,
-          courseId,
-          module,
-          lesson,
-          section,
-          step
-        }
-      });
-      return result;
-}
+        step
+      }
+    });
+    return result;
+  }
 }
 
 module.exports = new UserService();

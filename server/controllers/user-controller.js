@@ -18,19 +18,31 @@ class UserController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return next(ApiError.BadRequest(`
+        return next(
+          ApiError.BadRequest(
+            `
           слабый пароль! 
-          придумайте понадежнее`
-          , errors.array()));
+          придумайте понадежнее`,
+            errors.array()
+          )
+        );
       }
       const { name, surname, email, password } = req.body;
       const codeId = req.codeId;
-      const userData = await userService.registration(name, surname, email, password, codeId);
+      const userData = await userService.registration(
+        name,
+        surname,
+        email,
+        password,
+        codeId
+      );
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true
       });
-      return res.json(userData);
+      return (
+        res.json(userData), res.redirect(`${process.env.CLIENT_URL}/courses`)
+      );
     } catch (e) {
       next(e);
     }
@@ -40,7 +52,7 @@ class UserController {
     try {
       const activationLink = req.params.link;
       await userService.activate(activationLink);
-      return res.redirect(process.env.CLIENT_URL);
+      return res.redirect(`${process.env.CLIENT_URL}/courses`);
     } catch (e) {
       next(e);
     }
@@ -49,14 +61,14 @@ class UserController {
   async login(req, res, next) {
     try {
       const { email, password } = req.body;
-      console.log({ email, password })
       const userData = await userService.login(email, password);
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true
       });
-      // return res.json(userData);
-      return (res.json(userData), res.redirect(`${process.env.CLIENT_URL}/courses`));
+      return (
+        res.json(userData), res.redirect(`${process.env.CLIENT_URL}/courses`)
+      );
     } catch (e) {
       next(e);
     }
@@ -72,6 +84,32 @@ class UserController {
       next(e);
     }
   }
+
+//ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
+  async forgotPassword(req, res, next) {
+    try {
+      const { email } = req.body;
+      const resetToken = await userService.forgotPassword(email);
+      res.cookie('resetToken', resetToken, {
+        maxAge: 1 * 60 * 60 * 1000,
+        httpOnly: true
+      });
+       return res.json(resetToken);
+    } catch (e) {
+      next(e);
+    }
+  }
+//ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
+  async resetPassword(req, res, next) {
+    try {
+      const { resetToken } = req.cookies;
+      const { email, newPassword } = req.body;
+      await userService.resetPassword(resetToken, email, newPassword);
+    } catch (e) {
+      next(e);
+    }
+  }
+//ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
 
   async refresh(req, res, next) {
     try {
@@ -96,31 +134,33 @@ class UserController {
     }
   }
 
-
-async getCourses(req, res, next) {
-  try {
-    const userId = req.user.id;
-    const courses = await userService.getUserCourses(userId);
-    return res.json(courses);
-  } catch (e) {
-    next(e);
+  async getCourses(req, res, next) {
+    try {
+      const userId = req.user.id;
+      const courses = await userService.getUserCourses(userId);
+      return res.json(courses);
+    } catch (e) {
+      next(e);
+    }
   }
-}
-  
-//сейчас
+
+  //сейчас
   async getCurrentProgress(req, res, next) {
-  try {
-    const userId = req.user.id;
-    const courseId = parseInt(req.params.courseId, 10);
+    try {
+      const userId = req.user.id;
+      const courseId = parseInt(req.params.courseId, 10);
 
-    const progress = await userService.getCurrentUserProgress(userId, courseId);
-    return res.json(progress);
-  } catch (e) {
-    next(e);
+      const progress = await userService.getCurrentUserProgress(
+        userId,
+        courseId
+      );
+      return res.json(progress);
+    } catch (e) {
+      next(e);
+    }
   }
-}
 
-async trackCurrentProgress(req, res, next) {
+  async trackCurrentProgress(req, res, next) {
     try {
       const userId = req.user.id;
       const { courseId, module, lesson, section, step } = req.body;

@@ -35,6 +35,18 @@ export default class AuthService {
     );
   }
 
+  static async sendResetEmail(email: string): Promise<AxiosResponse<string>> {
+    return api.post('/forgot-password', { email });
+  }
+
+  static async resetPassword(
+    resetLink: string,
+    email: string,
+    newPassword: string
+  ): Promise<AxiosResponse<string>> {
+    return api.post('/forgot-password', { resetLink, email, newPassword });
+  }
+
   static async logout(): Promise<void> {
     await api.post<AuthResponse>('/logout');
   }

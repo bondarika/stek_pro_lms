@@ -15,7 +15,7 @@ module.exports = async function (req, res, next) {
     if (!codeData) {
       return next(ApiError.UnauthorizedError());
     }
-    req.codeId = codeData.id; 
+    req.codeId = codeData.id;
     next();
   } catch (e) {
     return next(ApiError.UnauthorizedError());

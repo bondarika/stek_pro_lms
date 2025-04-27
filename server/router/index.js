@@ -13,7 +13,8 @@ router.post(
     body('email').isEmail(),
     body('password')
       .isLength({ min: 8, max: 32 })
-      .matches(/^[A-Za-z0-9#?!@$%^&*-.]+$/)
+      // .matches(/^[A-Za-z0-9#?!@$%^&*-.]+$/)
+      .matches(/^[A-Za-z0-9]+$/)
       .withMessage(
         'Пароль должен содержать только буквы латинского алфавита, цифры и специальные символы'
       )
@@ -33,16 +34,26 @@ router.post(
 router.get('/activate/:link', userController.activate);
 router.post('/login', userController.login);
 router.post('/logout', userController.logout);
+router.post("/forgot-password", userController.forgotPassword);
+router.post('/reset-password/:resetLink', userController.resetPassword);
 router.get('/refresh', userController.refresh);
 router.get('/users', authMiddleware, userController.getUsers);
 router.get('/user/courses', authMiddleware, userController.getCourses);
 
 // Для отслеживания прогресса get
-router.get('/user/progress/:courseId', authMiddleware, userController.getCurrentProgress);
+router.get(
+  '/user/progress/:courseId',
+  authMiddleware,
+  userController.getCurrentProgress
+);
 // Для отслеживания прогресса post
-router.post('/user/progress', authMiddleware, userController.trackCurrentProgress);
+router.post(
+  '/user/progress',
+  authMiddleware,
+  userController.trackCurrentProgress
+);
 
-// Для отслеживания текущего шага 
+// Для отслеживания текущего шага
 // ?????????????????????????????????
 
 module.exports = router;

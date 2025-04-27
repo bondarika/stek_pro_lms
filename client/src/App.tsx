@@ -6,6 +6,7 @@ import ObservedAuthForm from './components/AuthForm/AuthForm';
 import ProfilePage from './pages/ProfilePage.tsx/ProfilePage';
 import CoursesPage from './pages/CoursesPage.tsx/CoursesPage';
 import NoMobile from './components/NoMobile/NoMobile';
+import ResetPasswordForm from './components/ResetPasswordForm/ResetPasswordForm';
 
 function App() {
   const { store } = useContext(Context);
@@ -35,7 +36,7 @@ function App() {
   }, []);
 
   if (isScreenLocked) {
-    return <NoMobile/>;
+    return <NoMobile />;
   }
 
   if (store.isLoading) {
@@ -46,7 +47,15 @@ function App() {
   if (!store.isAuth)
     return (
       <>
-        <ObservedAuthForm />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<ObservedAuthForm />} />
+            <Route
+              path="/reset-password/:resetLink"
+              element={<ResetPasswordForm />}
+            />
+          </Routes>
+        </BrowserRouter>
       </>
     );
 

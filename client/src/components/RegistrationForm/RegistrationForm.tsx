@@ -13,7 +13,7 @@ const RegistrationForm: FC = observer(() => {
   const [name, setName] = useState<string>('');
   const [surname, setSurname] = useState<string>('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
-  const [passwordError, setPasswordError] = useState<string>(''); // State for password error
+  const [passwordError, setPasswordError] = useState<string>(''); 
 
   const { store } = useContext(Context);
   const [code, setCodeInput] = useState<string>('');
@@ -148,7 +148,11 @@ const RegistrationForm: FC = observer(() => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
 
-            <Button type="submit" disabled={isSubmitDisabled}>
+            <Button
+              type="submit"
+              disabled={isSubmitDisabled}
+              className={styles.register}
+            >
               зарегистрироваться
             </Button>
           </form>
