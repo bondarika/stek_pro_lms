@@ -1,21 +1,20 @@
 ﻿@font-face {
   font-family: 'Coolvetica';
-  src: url('src/assets/fonts/Coolvetica/Coolvetica.ttf'), format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-
-@font-face {
-  font-family: 'Neutral Face';
-  src: url('src/assets/fonts/NeutralFace/NeutralFace.otf') format('opentype');
+  src: url('../src/assets/fonts/Coolvetica/Coolvetica.ttf'), format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Neutral Face';
-  src: url('src/assets/fonts/NeutralFace/NeutralFace-Bold.otf')
+  src: url('../src/assets/fonts/NeutralFace/NeutralFace.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neutral Face';
+  src: url('../src/assets/fonts/NeutralFace/NeutralFace-Bold.otf')
     format('opentype');
   font-weight: 700;
   font-style: bold;
@@ -23,28 +22,28 @@
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('src/assets/fonts/SF Pro Display/SF-Pro-Display-Regular.otf')
+  src: url('../src/assets/fonts/SFProDisplay/SF-Pro-Display-Regular.otf')
     format('opentype');
   font-weight: 400;
 }
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('src/assets/fonts/SF Pro Display/SF-Pro-Display-Medium.otf')
+  src: url('../src/assets/fonts/SFProDisplay/SF-Pro-Display-Medium.otf')
     format('opentype');
   font-weight: 500;
 }
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('src/assets/fonts/SF Pro Display/SF-Pro-Display-Semibold.otf')
+  src: url('../src/assets/fonts/SFProDisplay/SF-Pro-Display-Semibold.otf')
     format('opentype');
   font-weight: 600;
 }
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('src/assets/fonts/SF Pro Display/SF-Pro-Display-Bold.otf')
+  src: url('../src/assets/fonts/SFProDisplay/SF-Pro-Display-Bold.otf')
     format('opentype');
   font-weight: 700;
 }
