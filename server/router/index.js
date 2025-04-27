@@ -13,15 +13,12 @@ router.post(
     body('email').isEmail(),
     body('password')
       .isLength({ min: 8, max: 32 })
-      .matches(/^[A-Za-z0-9]+$/)
-      .withMessage(
-        'Пароль должен содержать буквы латинского алфавита и цифры')
       .matches(/^(?=.*?[A-Z])/)
       .withMessage('Пароль должен содержать хотя бы одну заглавную букву')
       .matches(/^(?=.*?[a-z])/)
       .withMessage('Пароль должен содержать хотя бы одну строчную букву')
       .matches(/^(?=.*?[0-9])/)
-      .withMessage('Пароль должен содержать хотя бы одну строчную цифру')
+      .withMessage('Пароль должен содержать хотя бы одну цифру')
   ],
   userController.registration
 );
