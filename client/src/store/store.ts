@@ -69,7 +69,6 @@ export default class Store {
   async login(email: string, password: string) {
     try {
       const response = await AuthService.login(email, password);
-      console.log(response);
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
@@ -114,8 +113,7 @@ export default class Store {
 
   async sendResetEmail(email: string) {
     try {
-      const response = await AuthService.sendResetEmail(email);
-      console.log(response);
+      AuthService.sendResetEmail(email);
       return true;
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
@@ -126,10 +124,9 @@ export default class Store {
     }
   }
 
-  async resetPassword(resetLink: string, email: string, newPassword: string) {
+  async resetPassword(resetLink: string, newPassword: string) {
     try {
-      const response = await AuthService.resetPassword(resetLink, email, newPassword);
-      console.log(response);
+      await AuthService.resetPassword(resetLink, newPassword);
       return true;
     } catch (e) {
       const error = e as AxiosError<{ message: string }>;
@@ -142,8 +139,7 @@ export default class Store {
 
   async logout() {
     try {
-      const response = await AuthService.logout();
-      console.log(response);
+      await AuthService.logout();
       localStorage.removeItem('token');
       this.setAuth(false);
       this.setUser({} as User);

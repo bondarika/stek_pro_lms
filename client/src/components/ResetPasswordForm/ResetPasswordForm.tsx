@@ -15,7 +15,6 @@ const ResetPasswordForm: FC = function ResetPasswordForm() {
   const [message, setMessage] = useState('');
   const [passwordError, setPasswordError] = useState<string>('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
-  const [email, setEmail] = useState<string>('');
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +23,7 @@ const ResetPasswordForm: FC = function ResetPasswordForm() {
       return;
     }
     try {
-      await store.resetPassword(resetLink, email, newPassword);
+      await store.resetPassword(resetLink, newPassword);
       setMessage('Пароль успешно изменён');
     } catch (error) {
       console.log(error);
@@ -106,15 +105,9 @@ const ResetPasswordForm: FC = function ResetPasswordForm() {
           </p>
         )}
         {message ? (
-          <p className={styles.error}>{message}</p>
+          <div className={styles.error}>{message}</div>
         ) : (
           <form onSubmit={handleReset}>
-            <input
-              type="email"
-              placeholder="электронная почта"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
             <input
               type="password"
               placeholder="новый пароль"

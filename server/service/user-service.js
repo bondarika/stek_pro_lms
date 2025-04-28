@@ -76,7 +76,6 @@ class UserService {
     return token;
   }
 
-  //ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
   async forgotPassword(email) {
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
@@ -99,9 +98,9 @@ class UserService {
       email,
       `${process.env.CLIENT_URL}/reset-password/${resetLink}`
     );
-    return(true);
+    return(resetToken);
   }
-  //ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
+
   async resetPassword(resetToken, newPassword) {
     const resetRecord = await prisma.passwordResetToken.findUnique({
       where: { resetToken },
@@ -117,7 +116,6 @@ class UserService {
     });
     await prisma.passwordResetToken.delete({ where: { resetToken } });
   }
-  //ЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬЗДЕСЬ
 
   async refresh(refreshToken) {
     if (!refreshToken) {

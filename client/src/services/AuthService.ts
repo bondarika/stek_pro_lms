@@ -41,10 +41,9 @@ export default class AuthService {
 
   static async resetPassword(
     resetLink: string,
-    email: string,
     newPassword: string
   ): Promise<AxiosResponse<string>> {
-    return api.post('/forgot-password', { resetLink, email, newPassword });
+    return api.post('/reset-password/:resetLink', { resetLink, newPassword });
   }
 
   static async logout(): Promise<void> {

@@ -103,8 +103,9 @@ class UserController {
   async resetPassword(req, res, next) {
     try {
       const { resetToken } = req.cookies;
-      const { email, newPassword } = req.body;
-      await userService.resetPassword(resetToken, email, newPassword);
+      const { newPassword } = req.body;
+      await userService.resetPassword(resetToken, newPassword);
+      return true;
     } catch (e) {
       next(e);
     }
