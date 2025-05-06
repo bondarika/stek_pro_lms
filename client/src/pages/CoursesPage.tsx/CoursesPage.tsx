@@ -9,6 +9,7 @@ import Prev from '@/assets/icons/prev/prev.svg?react';
 import { useNavigation } from '../../hooks/useNavigation';
 
 const sectionOrder = ['теория', 'сборка', 'программирование'];
+const moduleNames = ['Управление светом', 'Контроль движения']
 
 const CoursesPage = observer(() => {
   const [selectedModule, setSelectedModule] = useNavigation<number | null>(
@@ -146,7 +147,7 @@ const CoursesPage = observer(() => {
                     </div>
 
                     <div className={styles.coursesPage_lessonTitle}>
-                      <h3>Управление светом 💡</h3>
+                      <h3>{moduleNames[currentModuleIndex]}</h3>
                     </div>
 
                     {Array.from(lessonsMap.entries()).map(
